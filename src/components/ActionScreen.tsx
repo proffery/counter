@@ -1,27 +1,36 @@
-import { useState } from "react"
 import { Wrapper } from "./Wrapper.styled"
 import { Button } from "./Button"
 import { Screen } from "./Screen"
 
-export const ActionScreen = () => {
-    const [screenValue, setScreenValue] = useState(0)
-    const maxVal = 5
-    const minVal = 0
-    const step = 1
+type ActionPropsType = {
+    screenValue: number
+    minValue: number
+    maxValue: number
+    inputError: boolean
+    isValueSet: boolean
+    increaseScreenValue: () => void
+    resetScreenValue: () => void
+}
 
-    const addHandler = () => {
-        setScreenValue(screenValue + step)
+export const ActionScreen = (props:ActionPropsType) => {
+
+    const incHandler = () => {
+        props.increaseScreenValue()
     }
 
     const resetHandler = () => {
-        setScreenValue(minVal)
+        props.resetScreenValue()
     }
     return (
         <Wrapper direction='column' variant='bordered' padding="20px" gap="20px">
-        <Screen screenValue={screenValue} maxVal={maxVal} />
+        <Screen screenValue={props.screenValue} 
+            maxValue={props.maxValue} 
+            inputError={props.inputError}
+            isValueSet={props.isValueSet}
+        />
         <Wrapper direction='row' variant='common' gap="20px">
-          <Button name='Add' onClick={addHandler} isDisabled={screenValue >= maxVal ? true : false} />
-          <Button name='Reset' onClick={resetHandler} isDisabled={screenValue <= minVal ? true : false} />
+          <Button name='Add' onClick={incHandler} isDisabled={(props.screenValue >= props.maxValue) || !props.isValueSet ? true : false} />
+          <Button name='Reset' onClick={resetHandler} isDisabled={props.screenValue <= props.minValue ? true : false} />
         </Wrapper>
       </Wrapper>
     )

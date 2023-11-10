@@ -1,17 +1,41 @@
-import styled from "styled-components"
+import { ChangeEvent } from "react"
+import styled, { css } from "styled-components"
 
 type InputPropsType = {
-    placeholder?: string
+    label?: string
+    isError?: boolean
     value: number
+    onChange: (value: string) => void
 }
 
 export const Input = (props:InputPropsType) => {
+
+    const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
+        props.onChange(e.currentTarget.value)
+    }
+
     return (
-        <StyledInput type="number" value={props.value} placeholder={props.placeholder || ''}></StyledInput>
+    <div>
+        {props.label && 
+            <StyledLabel htmlFor={props.label}>{props.label}</StyledLabel>}
+        <StyledInput 
+            type="number" 
+            id={props.label} 
+            value={props.value}
+            onChange={onChangeHandler}
+            iserror={props.isError || false}
+        />
+    </div>
+
     )
 }
 
-const StyledInput = styled.input`
+type StyledInputPropsType = {
+    iserror?: boolean
+}
+
+const StyledInput = styled.input<StyledInputPropsType>`
+    text-align: right;
     display: flex;
     min-width: 160px;
     width: 100%;
@@ -21,4 +45,13 @@ const StyledInput = styled.input`
     width: 80px;
     color: white;
     border-radius: 10px;
+    ${props => props.iserror && css<StyledInputPropsType>`
+        background-color: lightcoral;
+        border-color: red;
+    `}
+`
+
+const StyledLabel = styled.label`
+    display: flex;
+    padding: 0 5px;
 `

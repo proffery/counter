@@ -2,6 +2,7 @@ import styled, { css } from "styled-components"
 
 type ButtonPropsType = {
     name: string
+    type?: "submit" | "reset" | "button"
     isDisabled?: boolean
     onClick: () => void
 }
@@ -11,7 +12,11 @@ export const Button = (props: ButtonPropsType) => {
         props.onClick()
     }
     return (
-        <StyledButton disabled={props.isDisabled} onClick={onClickHandler}>{props.name}</StyledButton>
+        <StyledButton 
+            disabled={props.isDisabled} 
+            onClick={onClickHandler} 
+            type={props.type || "button"}
+        >{props.name}</StyledButton>
     )
 }
 
