@@ -20,7 +20,7 @@ type StyledButtonType = {
 }
 
 const StyledButton = styled.button<StyledButtonType>`
-    margin: 10px;
+    align-self: center;
     background-color: transparent;
     border: 1px solid blueviolet;
     padding: 10px 20px;
