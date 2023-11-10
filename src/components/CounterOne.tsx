@@ -39,6 +39,7 @@ export const CounterOne = () => {
             setValues={setValues}
             setInputError={setInputError}
             setIsValueSet={setIsValueSet}
+            resetScreenValue={resetScreenValue}
         />
         <ActionScreen 
             maxValue={counterState.maxValue} 

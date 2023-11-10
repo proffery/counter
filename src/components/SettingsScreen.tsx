@@ -10,6 +10,7 @@ type SettingsScreenPropsType = {
     setValues: (valuesObject:ValuesObjectType) => void
     setInputError: (isError:boolean) => void
     setIsValueSet: (isSetted:boolean) => void
+    resetScreenValue: () => void
 }
 export type ValuesObjectType = {
     maxValue: number
@@ -37,12 +38,14 @@ export const SettingsScreen = (props: SettingsScreenPropsType) => {
     const maxValueOnChangeHandler = (value: string) => {
         setSettingsScreenFormState({...settingsScreenFormState, maxValue: parseInt(value)})
         props.setIsValueSet(false)
+        props.resetScreenValue()
         setIsButtonDisabled(false)
     }
     
     const minValueOnChangeHandler = (value: string) => {
         setSettingsScreenFormState({...settingsScreenFormState, minValue: parseInt(value)})
         props.setIsValueSet(false)
+        props.resetScreenValue()
         setIsButtonDisabled(false)
     }
 

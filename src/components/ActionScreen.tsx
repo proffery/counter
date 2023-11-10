@@ -29,8 +29,8 @@ export const ActionScreen = (props:ActionPropsType) => {
             isValueSet={props.isValueSet}
         />
         <Wrapper direction='row' variant='common' gap="20px">
-          <Button name='Add' onClick={incHandler} isDisabled={(props.screenValue >= props.maxValue) || !props.isValueSet ? true : false} />
-          <Button name='Reset' onClick={resetHandler} isDisabled={props.screenValue <= props.minValue ? true : false} />
+          <Button name='Add' onClick={incHandler} isDisabled={props.screenValue >= props.maxValue || !props.isValueSet ? true : false} />
+          <Button name='Reset' onClick={resetHandler} isDisabled={props.screenValue <= props.minValue || !props.isValueSet ?  true : false} />
         </Wrapper>
       </Wrapper>
     )
