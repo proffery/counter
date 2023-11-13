@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
-import { ActionScreen } from "./ActionScreen"
-import { SettingsScreen, ValuesObjectType } from "./SettingsScreen"
+import { Display } from "./Display"
+import { Settings, ValuesObjectType } from "./Settings"
 import { Wrapper } from "./Wrapper.styled"
 
 export type CounterState = {
@@ -62,14 +62,14 @@ export const Counter = () => {
 
     return (
         <Wrapper direction="row" variant="common" gap="20px">
-            <SettingsScreen
+            <Settings
                 globalCounterState={counterState}
                 setValues={setValues}
                 setInputError={setInputError}
                 setIsValueSet={setIsValueSet}
                 resetScreenValue={resetScreenValue}
             />
-            <ActionScreen
+            <Display
                 globalCounterState={counterState}
                 increaseScreenValue={increaseScreenValue}
                 resetScreenValue={resetScreenValue}

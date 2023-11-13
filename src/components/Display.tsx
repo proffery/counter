@@ -3,7 +3,7 @@ import { Button } from "./Button"
 import { Screen } from "./Screen"
 import { CounterState } from "./Counter"
 
-type ActionPropsType = {
+type DisplayPropsType = {
     globalCounterState: CounterState
     inputError: boolean
     isValueSet: boolean
@@ -11,7 +11,7 @@ type ActionPropsType = {
     resetScreenValue: () => void
 }
 
-export const ActionScreen = (props: ActionPropsType) => {
+export const Display = (props: DisplayPropsType) => {
 
     const ERROR_MSG = "Incorect value"
     const HELP_MSG = "Enter values and press \"set\""

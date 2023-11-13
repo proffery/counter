@@ -5,7 +5,7 @@ import { Wrapper } from "./Wrapper.styled"
 import { useEffect, useState } from "react"
 import { CounterState } from "./Counter"
 
-type SettingsScreenPropsType = {
+type SettingsPropsType = {
     globalCounterState: CounterState
     setValues: (valuesObject: ValuesObjectType) => void
     setInputError: (isError: boolean) => void
@@ -17,7 +17,7 @@ export type ValuesObjectType = {
     minValue: number
 }
 
-export const SettingsScreen = (props: SettingsScreenPropsType) => {
+export const Settings = (props: SettingsPropsType) => {
     const [inputsLocalState, setInputsLocalState] = useState({
         maxValue: props.globalCounterState.maxValue,
         minValue: props.globalCounterState.minValue
@@ -32,6 +32,30 @@ export const SettingsScreen = (props: SettingsScreenPropsType) => {
     useEffect(() => {
         setInputsLocalState({ ...inputsLocalState, maxValue: props.globalCounterState.maxValue, minValue: props.globalCounterState.minValue })
     }, [props.globalCounterState.maxValue, props.globalCounterState.minValue])
+
+    useEffect(() => {
+        if (inputsLocalState.minValue < 0) {
+            setIsInputError({ ...isInputError, isMaxValueError: false, isMinValueError: true })
+            setIsSetButtonDisabled(true)
+            props.setInputError(true)
+        }
+        else if (inputsLocalState.maxValue < 0) {
+            setIsInputError({ ...isInputError, isMaxValueError: true, isMinValueError: false })
+            setIsSetButtonDisabled(true)
+            props.setInputError(true)
+        }
+        else if (inputsLocalState.minValue >= inputsLocalState.maxValue) {
+            setIsInputError({ ...isInputError, isMaxValueError: true, isMinValueError: true })
+            setIsSetButtonDisabled(true)
+            props.setInputError(true)
+        }
+        else {
+            setIsInputError({ ...isInputError, isMaxValueError: false, isMinValueError: false })
+            setIsSetButtonDisabled(false)
+            props.setInputError(false)
+        }
+
+    }, [inputsLocalState])
 
     const onClickSetHandler = () => {
         props.setValues(inputsLocalState)
@@ -53,29 +77,6 @@ export const SettingsScreen = (props: SettingsScreenPropsType) => {
         setIsSetButtonDisabled(false)
     }
 
-    useEffect(() => {
-        if (inputsLocalState.minValue >= inputsLocalState.maxValue) {
-            setIsInputError({ ...isInputError, isMaxValueError: true, isMinValueError: true })
-            setIsSetButtonDisabled(true)
-            props.setInputError(true)
-        }
-        else if (inputsLocalState.minValue < 0) {
-            setIsInputError({ ...isInputError, isMaxValueError: false, isMinValueError: true })
-            setIsSetButtonDisabled(true)
-            props.setInputError(true)
-        }
-        else if (inputsLocalState.maxValue < 0) {
-            setIsInputError({ ...isInputError, isMaxValueError: true, isMinValueError: false })
-            setIsSetButtonDisabled(true)
-            props.setInputError(true)
-        }
-        else {
-            setIsInputError({ ...isInputError, isMaxValueError: false, isMinValueError: false })
-            setIsSetButtonDisabled(false)
-            props.setInputError(false)
-        }
-
-    }, [inputsLocalState.minValue, inputsLocalState.maxValue])
 
     return (
         <Wrapper direction="column" variant="bordered" padding="20px" gap="20px">
