@@ -3,13 +3,13 @@ import { Button } from "./Button"
 import { Input } from "./Input"
 import { Wrapper } from "./Wrapper.styled"
 import { useEffect, useState } from "react"
-import { CounterState } from "./CounterOne"
+import { CounterState } from "./Counter"
 
 type SettingsScreenPropsType = {
     globalCounterState: CounterState
-    setValues: (valuesObject:ValuesObjectType) => void
-    setInputError: (isError:boolean) => void
-    setIsValueSet: (isSetted:boolean) => void
+    setValues: (valuesObject: ValuesObjectType) => void
+    setInputError: (isError: boolean) => void
+    setIsValueSet: (isSetted: boolean) => void
     resetScreenValue: () => void
 }
 export type ValuesObjectType = {
@@ -18,7 +18,7 @@ export type ValuesObjectType = {
 }
 
 export const SettingsScreen = (props: SettingsScreenPropsType) => {
-    const [settingsScreenLocalState, setSettingsScreenLocalState] = useState({
+    const [inputsLocalState, setInputsLocalState] = useState({
         maxValue: props.globalCounterState.maxValue,
         minValue: props.globalCounterState.minValue
     })
@@ -30,70 +30,70 @@ export const SettingsScreen = (props: SettingsScreenPropsType) => {
     const [isSetButtonDisabled, setIsSetButtonDisabled] = useState(false)
 
     useEffect(() => {
-        setSettingsScreenLocalState({...settingsScreenLocalState, maxValue: props.globalCounterState.maxValue, minValue: props.globalCounterState.minValue})
+        setInputsLocalState({ ...inputsLocalState, maxValue: props.globalCounterState.maxValue, minValue: props.globalCounterState.minValue })
     }, [props.globalCounterState.maxValue, props.globalCounterState.minValue])
 
     const onClickSetHandler = () => {
-        props.setValues(settingsScreenLocalState)
+        props.setValues(inputsLocalState)
         props.setIsValueSet(true)
         setIsSetButtonDisabled(true)
     }
 
     const maxValueOnChangeHandler = (value: string) => {
-        setSettingsScreenLocalState({...settingsScreenLocalState, maxValue: parseInt(value)})
-        props.setIsValueSet(false)
-        props.resetScreenValue()
-        setIsSetButtonDisabled(false)
-    }
-    
-    const minValueOnChangeHandler = (value: string) => {
-        setSettingsScreenLocalState({...settingsScreenLocalState, minValue: parseInt(value)})
+        setInputsLocalState({ ...inputsLocalState, maxValue: parseInt(value) })
         props.setIsValueSet(false)
         props.resetScreenValue()
         setIsSetButtonDisabled(false)
     }
 
-    useEffect(() => { 
-        if (settingsScreenLocalState.minValue >= settingsScreenLocalState.maxValue) {
-            setIsInputError({...isInputError, isMaxValueError: true, isMinValueError:true})
+    const minValueOnChangeHandler = (value: string) => {
+        setInputsLocalState({ ...inputsLocalState, minValue: parseInt(value) })
+        props.setIsValueSet(false)
+        props.resetScreenValue()
+        setIsSetButtonDisabled(false)
+    }
+
+    useEffect(() => {
+        if (inputsLocalState.minValue >= inputsLocalState.maxValue) {
+            setIsInputError({ ...isInputError, isMaxValueError: true, isMinValueError: true })
             setIsSetButtonDisabled(true)
             props.setInputError(true)
-        } 
-        else if (settingsScreenLocalState.minValue < 0) {
-            setIsInputError({...isInputError, isMaxValueError: false, isMinValueError:true})
-            setIsSetButtonDisabled(true) 
+        }
+        else if (inputsLocalState.minValue < 0) {
+            setIsInputError({ ...isInputError, isMaxValueError: false, isMinValueError: true })
+            setIsSetButtonDisabled(true)
             props.setInputError(true)
         }
-        else if (settingsScreenLocalState.maxValue < 0) {
-            setIsInputError({...isInputError, isMaxValueError: true, isMinValueError:false})
-            setIsSetButtonDisabled(true) 
+        else if (inputsLocalState.maxValue < 0) {
+            setIsInputError({ ...isInputError, isMaxValueError: true, isMinValueError: false })
+            setIsSetButtonDisabled(true)
             props.setInputError(true)
         }
         else {
-            setIsInputError({...isInputError, isMaxValueError: false, isMinValueError:false})
+            setIsInputError({ ...isInputError, isMaxValueError: false, isMinValueError: false })
             setIsSetButtonDisabled(false)
             props.setInputError(false)
         }
 
-    }, [settingsScreenLocalState.minValue, settingsScreenLocalState.maxValue])
+    }, [inputsLocalState.minValue, inputsLocalState.maxValue])
 
     return (
         <Wrapper direction="column" variant="bordered" padding="20px" gap="20px">
             <Form>
-                <Input value={settingsScreenLocalState.maxValue}
+                <Input value={inputsLocalState.maxValue}
                     label="Max value"
                     onChange={maxValueOnChangeHandler}
                     isInputError={isInputError.isMaxValueError}
                 />
-                <Input 
-                    value={settingsScreenLocalState.minValue} 
-                    label="Min value" 
+                <Input
+                    value={inputsLocalState.minValue}
+                    label="Min value"
                     onChange={minValueOnChangeHandler}
                     isInputError={isInputError.isMinValueError}
                 />
-                <Button name="Set" 
-                    onClick={onClickSetHandler} 
-                    isDisabled={isSetButtonDisabled}/>
+                <Button name="Set"
+                    onClick={onClickSetHandler}
+                    isDisabled={isSetButtonDisabled} />
             </Form>
         </Wrapper>
     )

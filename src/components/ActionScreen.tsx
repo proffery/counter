@@ -1,7 +1,7 @@
 import { Wrapper } from "./Wrapper.styled"
 import { Button } from "./Button"
 import { Screen } from "./Screen"
-import { CounterState } from "./CounterOne"
+import { CounterState } from "./Counter"
 
 type ActionPropsType = {
     globalCounterState: CounterState

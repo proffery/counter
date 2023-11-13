@@ -10,7 +10,7 @@ export type CounterState = {
     step: number
 }
 
-export const CounterOne = () => {
+export const Counter = () => {
 
 
     const [counterState, setCounterState] = useState<CounterState>({
@@ -54,7 +54,7 @@ export const CounterOne = () => {
         const localStorageValues = localStorage.getItem('localCounterState')
         if (localStorageValues) {
             const localStorageParsedValues = await JSON.parse(localStorageValues)
-            setCounterState({...counterState, maxValue:localStorageParsedValues.maxValue, minValue:localStorageParsedValues.minValue})
+            setCounterState({ ...counterState, maxValue: localStorageParsedValues.maxValue, minValue: localStorageParsedValues.minValue })
             setIsValueSet(true)
         }
     }

@@ -12,9 +12,9 @@ export const Button = (props: ButtonPropsType) => {
         props.onClick()
     }
     return (
-        <StyledButton 
-            disabled={props.isDisabled} 
-            onClick={onClickHandler} 
+        <StyledButton
+            disabled={props.isDisabled}
+            onClick={onClickHandler}
             type={props.type || "button"}
         >{props.name}</StyledButton>
     )

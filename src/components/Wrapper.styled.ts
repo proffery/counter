@@ -1,10 +1,10 @@
 import styled, { css } from "styled-components";
 
 type WrapperPropsType = {
-    variant: "common" | "bordered"
-    direction: "column" | "row"
-    gap?: string
-    padding?: string
+  variant: "common" | "bordered"
+  direction: "column" | "row"
+  gap?: string
+  padding?: string
 }
 
 export const Wrapper = styled.div<WrapperPropsType>`

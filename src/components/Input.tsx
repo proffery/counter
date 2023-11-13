@@ -8,24 +8,24 @@ type InputPropsType = {
     onChange: (value: string) => void
 }
 
-export const Input = (props:InputPropsType) => {
+export const Input = (props: InputPropsType) => {
 
     const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
         props.onChange(e.currentTarget.value)
     }
 
     return (
-    <div>
-        {props.label && 
-            <StyledLabel htmlFor={props.label}>{props.label}</StyledLabel>}
-        <StyledInput 
-            type="number" 
-            id={props.label} 
-            value={props.value}
-            onChange={onChangeHandler}
-            error={props.isInputError}
-        />
-    </div>
+        <div>
+            {props.label &&
+                <StyledLabel htmlFor={props.label}>{props.label}</StyledLabel>}
+            <StyledInput
+                type="number"
+                id={props.label}
+                value={props.value}
+                onChange={onChangeHandler}
+                error={props.isInputError}
+            />
+        </div>
 
     )
 }
