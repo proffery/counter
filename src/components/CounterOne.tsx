@@ -15,6 +15,7 @@ export const CounterOne = () => {
     
     const [inputError, setInputError] = useState(false)
     const [isValueSet, setIsValueSet] = useState(false)
+
     useEffect(() => {
         setCounterState({...counterState, screenValue: counterState.minValue})
     },[counterState.minValue])

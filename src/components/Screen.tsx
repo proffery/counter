@@ -1,32 +1,22 @@
 import styled, { css } from "styled-components"
 
 type ScreenPropsType = {
-    screenValue: number
-    maxValue: number
-    inputError: boolean
-    isValueSet: boolean
+    displayValue: string
+    isInputError: boolean
 }
 export const Screen = (props: ScreenPropsType) => {
-    const errorMsg = "Incorect value"
-    const infoMsg = "Enter values and press \"set\""
     
     return (
         <StyledScreen 
-            maxvalue={props.maxValue} 
-            screenvalue={props.screenValue}
-            inputerror={props.inputError}
-            isvalueset={props.isValueSet}
+            error={props.isInputError}
         >
-            {props.isValueSet ? props.screenValue : props.inputError ? errorMsg : infoMsg}
+            {props.displayValue}
         </StyledScreen>
     )
 }
 
 type StyledScreenType = {
-    screenvalue?: number
-    maxvalue?: number
-    inputerror?: boolean
-    isvalueset?: boolean
+    error?: boolean
 }
 
 const StyledScreen = styled.div<StyledScreenType>`
@@ -40,14 +30,7 @@ const StyledScreen = styled.div<StyledScreenType>`
     border: 1px solid blueviolet;
     border-radius: 10px;
     color: white;
-    ${props => (props.screenvalue === props.maxvalue || props.inputerror) && css<StyledScreenType>`
-    color: red;
-    `}
-    ${props => (props.screenvalue !== props.maxvalue && !props.inputerror) && css<StyledScreenType>`
-    color: white;
-    `}
-
-    ${props => props.isvalueset && css<StyledScreenType>`
-        font-size: 60px;
+    ${props => props.error && css<StyledScreenType>`
+        color: red;
     `}
 `

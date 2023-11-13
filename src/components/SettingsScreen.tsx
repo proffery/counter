@@ -27,47 +27,47 @@ export const SettingsScreen = (props: SettingsScreenPropsType) => {
         isMaxValueError: false,
         isMinValueError: false
     })
-    const [isButtonDisabled, setIsButtonDisabled] = useState(false)
+    const [isSetButtonDisabled, setIsSetButtonDisabled] = useState(false)
 
     const onClickSetHandler = () => {
         props.setValues(settingsScreenFormState)
         props.setIsValueSet(true)
-        setIsButtonDisabled(true)
+        setIsSetButtonDisabled(true)
     }
 
     const maxValueOnChangeHandler = (value: string) => {
         setSettingsScreenFormState({...settingsScreenFormState, maxValue: parseInt(value)})
         props.setIsValueSet(false)
         props.resetScreenValue()
-        setIsButtonDisabled(false)
+        setIsSetButtonDisabled(false)
     }
     
     const minValueOnChangeHandler = (value: string) => {
         setSettingsScreenFormState({...settingsScreenFormState, minValue: parseInt(value)})
         props.setIsValueSet(false)
         props.resetScreenValue()
-        setIsButtonDisabled(false)
+        setIsSetButtonDisabled(false)
     }
 
     useEffect(() => { 
         if (settingsScreenFormState.minValue >= settingsScreenFormState.maxValue) {
             setIsInputError({...isInputError, isMaxValueError: true, isMinValueError:true})
-            setIsButtonDisabled(true)
+            setIsSetButtonDisabled(true)
             props.setInputError(true)
         } 
         else if (settingsScreenFormState.minValue < 0) {
             setIsInputError({...isInputError, isMaxValueError: false, isMinValueError:true})
-            setIsButtonDisabled(true) 
+            setIsSetButtonDisabled(true) 
             props.setInputError(true)
         }
         else if (settingsScreenFormState.maxValue < 0) {
             setIsInputError({...isInputError, isMaxValueError: true, isMinValueError:false})
-            setIsButtonDisabled(true) 
+            setIsSetButtonDisabled(true) 
             props.setInputError(true)
         }
         else {
             setIsInputError({...isInputError, isMaxValueError: false, isMinValueError:false})
-            setIsButtonDisabled(false)
+            setIsSetButtonDisabled(false)
             props.setInputError(false)
         }
 
@@ -79,17 +79,17 @@ export const SettingsScreen = (props: SettingsScreenPropsType) => {
                 <Input value={settingsScreenFormState.maxValue}
                     label="Max value"
                     onChange={maxValueOnChangeHandler}
-                    isError={isInputError.isMaxValueError}
+                    isInputError={isInputError.isMaxValueError}
                 />
                 <Input 
                     value={settingsScreenFormState.minValue} 
                     label="Min value" 
                     onChange={minValueOnChangeHandler}
-                    isError={isInputError.isMinValueError}
+                    isInputError={isInputError.isMinValueError}
                 />
                 <Button name="Set" 
                     onClick={onClickSetHandler} 
-                    isDisabled={isButtonDisabled}/>
+                    isDisabled={isSetButtonDisabled}/>
             </Form>
         </Wrapper>
     )

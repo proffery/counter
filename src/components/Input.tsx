@@ -3,7 +3,7 @@ import styled, { css } from "styled-components"
 
 type InputPropsType = {
     label?: string
-    isError?: boolean
+    isInputError: boolean
     value: number
     onChange: (value: string) => void
 }
@@ -23,18 +23,18 @@ export const Input = (props:InputPropsType) => {
             id={props.label} 
             value={props.value}
             onChange={onChangeHandler}
-            iserror={props.isError || false}
+            error={props.isInputError}
         />
     </div>
 
     )
 }
 
-type StyledInputPropsType = {
-    iserror?: boolean
+type StyledInputType = {
+    error?: boolean
 }
 
-const StyledInput = styled.input<StyledInputPropsType>`
+const StyledInput = styled.input<StyledInputType>`
     text-align: right;
     display: flex;
     min-width: 160px;
@@ -45,7 +45,7 @@ const StyledInput = styled.input<StyledInputPropsType>`
     width: 80px;
     color: white;
     border-radius: 10px;
-    ${props => props.iserror && css<StyledInputPropsType>`
+    ${props => props.error && css<StyledInputType>`
         background-color: lightcoral;
         border-color: red;
     `}
