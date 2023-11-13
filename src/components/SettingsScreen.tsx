@@ -3,10 +3,10 @@ import { Button } from "./Button"
 import { Input } from "./Input"
 import { Wrapper } from "./Wrapper.styled"
 import { useEffect, useState } from "react"
+import { CounterState } from "./CounterOne"
 
 type SettingsScreenPropsType = {
-    minValue: number
-    maxValue: number
+    globalCounterState: CounterState
     setValues: (valuesObject:ValuesObjectType) => void
     setInputError: (isError:boolean) => void
     setIsValueSet: (isSetted:boolean) => void
@@ -18,9 +18,9 @@ export type ValuesObjectType = {
 }
 
 export const SettingsScreen = (props: SettingsScreenPropsType) => {
-    const [settingsScreenFormState, setSettingsScreenFormState] = useState({
-        maxValue: props.maxValue,
-        minValue: props.minValue
+    const [settingsScreenLocalState, setSettingsScreenLocalState] = useState({
+        maxValue: props.globalCounterState.maxValue,
+        minValue: props.globalCounterState.minValue
     })
 
     const [isInputError, setIsInputError] = useState({
@@ -29,38 +29,42 @@ export const SettingsScreen = (props: SettingsScreenPropsType) => {
     })
     const [isSetButtonDisabled, setIsSetButtonDisabled] = useState(false)
 
+    useEffect(() => {
+        setSettingsScreenLocalState({...settingsScreenLocalState, maxValue: props.globalCounterState.maxValue, minValue: props.globalCounterState.minValue})
+    }, [props.globalCounterState.maxValue, props.globalCounterState.minValue])
+
     const onClickSetHandler = () => {
-        props.setValues(settingsScreenFormState)
+        props.setValues(settingsScreenLocalState)
         props.setIsValueSet(true)
         setIsSetButtonDisabled(true)
     }
 
     const maxValueOnChangeHandler = (value: string) => {
-        setSettingsScreenFormState({...settingsScreenFormState, maxValue: parseInt(value)})
+        setSettingsScreenLocalState({...settingsScreenLocalState, maxValue: parseInt(value)})
         props.setIsValueSet(false)
         props.resetScreenValue()
         setIsSetButtonDisabled(false)
     }
     
     const minValueOnChangeHandler = (value: string) => {
-        setSettingsScreenFormState({...settingsScreenFormState, minValue: parseInt(value)})
+        setSettingsScreenLocalState({...settingsScreenLocalState, minValue: parseInt(value)})
         props.setIsValueSet(false)
         props.resetScreenValue()
         setIsSetButtonDisabled(false)
     }
 
     useEffect(() => { 
-        if (settingsScreenFormState.minValue >= settingsScreenFormState.maxValue) {
+        if (settingsScreenLocalState.minValue >= settingsScreenLocalState.maxValue) {
             setIsInputError({...isInputError, isMaxValueError: true, isMinValueError:true})
             setIsSetButtonDisabled(true)
             props.setInputError(true)
         } 
-        else if (settingsScreenFormState.minValue < 0) {
+        else if (settingsScreenLocalState.minValue < 0) {
             setIsInputError({...isInputError, isMaxValueError: false, isMinValueError:true})
             setIsSetButtonDisabled(true) 
             props.setInputError(true)
         }
-        else if (settingsScreenFormState.maxValue < 0) {
+        else if (settingsScreenLocalState.maxValue < 0) {
             setIsInputError({...isInputError, isMaxValueError: true, isMinValueError:false})
             setIsSetButtonDisabled(true) 
             props.setInputError(true)
@@ -71,18 +75,18 @@ export const SettingsScreen = (props: SettingsScreenPropsType) => {
             props.setInputError(false)
         }
 
-    }, [settingsScreenFormState.minValue, settingsScreenFormState.maxValue])
+    }, [settingsScreenLocalState.minValue, settingsScreenLocalState.maxValue])
 
     return (
         <Wrapper direction="column" variant="bordered" padding="20px" gap="20px">
             <Form>
-                <Input value={settingsScreenFormState.maxValue}
+                <Input value={settingsScreenLocalState.maxValue}
                     label="Max value"
                     onChange={maxValueOnChangeHandler}
                     isInputError={isInputError.isMaxValueError}
                 />
                 <Input 
-                    value={settingsScreenFormState.minValue} 
+                    value={settingsScreenLocalState.minValue} 
                     label="Min value" 
                     onChange={minValueOnChangeHandler}
                     isInputError={isInputError.isMinValueError}

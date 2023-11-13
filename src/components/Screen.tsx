@@ -5,9 +5,9 @@ type ScreenPropsType = {
     isInputError: boolean
 }
 export const Screen = (props: ScreenPropsType) => {
-    
+
     return (
-        <StyledScreen 
+        <StyledScreen
             error={props.isInputError}
         >
             {props.displayValue}
@@ -24,7 +24,7 @@ const StyledScreen = styled.div<StyledScreenType>`
     align-items: center;
     justify-content: center;
     height: 100%;
-    font-size: 20px;
+    font-size: 28px;
     padding: 10px;
     max-width: 160px;
     border: 1px solid blueviolet;
