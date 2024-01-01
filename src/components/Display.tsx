@@ -1,11 +1,11 @@
 import { Wrapper } from "./Wrapper.styled"
 import { Button } from "./Button"
 import { Screen } from "./Screen"
-import { CounterState } from "../AppCounter"
+import { GlobalCounterState } from "../AppCounter"
 import { useEffect, useState } from "react"
 
 type DisplayPropsType = {
-    globalCounterState: CounterState
+    globalCounterState: GlobalCounterState
     increaseScreenValue: () => void
     resetScreenValue: () => void
     setIsAddButtonDisabled: (isDisabled: boolean) => void
@@ -15,13 +15,16 @@ export const Display = (props: DisplayPropsType) => {
     const ERROR_MSG = "Incorect value"
     const HELP_MSG = "Enter values and press \"set\""
     const [displayValue, setDisplayValue] = useState(HELP_MSG)
-    useEffect(() => {
+    
+    const displayControlLogic = () => {
         if (props.globalCounterState.inputError) {
-            if (Number(props.globalCounterState.screenValue) >= Number(props.globalCounterState.maxValue )) {
+            if (Number(props.globalCounterState.screenValue) >= Number(props.globalCounterState.maxValue)) {
                 setDisplayValue(props.globalCounterState.screenValue)
+                props.setIsAddButtonDisabled(true)
             }
             else {
                 setDisplayValue(ERROR_MSG)
+                props.setIsAddButtonDisabled(true)
             }
         }
         else {
@@ -34,7 +37,17 @@ export const Display = (props: DisplayPropsType) => {
                 props.setIsAddButtonDisabled(true)
             }
         }
-    }, [props.globalCounterState.inputError, props.globalCounterState.setButtonDisabled, props.increaseScreenValue])
+    }
+
+    useEffect(() => {
+        displayControlLogic()
+    }, [
+        props.globalCounterState.resetButtonDisabled,
+        props.globalCounterState.addButtonDisabled,
+        props.globalCounterState.screenValue,
+        props.globalCounterState.inputError,
+        props.globalCounterState.setButtonDisabled
+    ])
 
     const incHandler = () => {
         props.increaseScreenValue()

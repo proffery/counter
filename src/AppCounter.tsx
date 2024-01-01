@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
-import { Settings, ValuesObjectType } from './components/Settings';
+import { Settings, MinMaxValuesObjectType } from './components/Settings';
 import { Wrapper } from './components/Wrapper.styled';
 import { Display } from './components/Display';
 import './App.css';
 
 
-export type CounterState = {
+export type GlobalCounterState = {
     minValue: string
     maxValue: string
     screenValue: string
@@ -19,7 +19,7 @@ export type CounterState = {
 
 export function AppCounter() {
 
-    const [counterState, setCounterState] = useState<CounterState>({
+    const [counterState, setCounterState] = useState<GlobalCounterState>({
         minValue: '0',
         maxValue: '5',
         screenValue: '0',
@@ -30,36 +30,43 @@ export function AppCounter() {
         resetButtonDisabled: true
     })
 
+    const increaseValueControlLogic = () => {
+        if (Number(counterState.screenValue) >= Number(counterState.maxValue)) {
+            setIsAddButtonDisabled(true);
+            setGlobalError(true);
+        }
+        else {
+            setIsAddButtonDisabled(false);
+            setGlobalError(false);
+        }
+    }
+
+    const resetButtonControlLogic = () => {
+        if (Number(counterState.screenValue) === Number(counterState.minValue)) {
+            setIsResetButtonDisabled(true);
+        }
+        else {
+            setIsResetButtonDisabled(false);
+        }
+    }
+
     useEffect(() => {
         getFromLocalStorage()
     }, [])
 
     useEffect(() => {
-        if (Number(counterState.screenValue) >= Number(counterState.maxValue)) {
-            setIsAddButtonDisabled(true)
-            setInputError(true)
-        }
-        else {
-            setIsAddButtonDisabled(false)
-            setInputError(false)
-
-        }
+        increaseValueControlLogic();
     }, [counterState.screenValue, counterState.maxValue])
 
     useEffect(() => {
-        if (Number(counterState.screenValue) === Number(counterState.minValue)) {
-            setIsResetButtonDisabled(true)
-        }
-        else {
-            setIsResetButtonDisabled(false)
-        }
+        resetButtonControlLogic();
     }, [counterState.screenValue, counterState.minValue])
 
-    const setValues = (valuesObject: ValuesObjectType) => {
+    const setMinMaxValues = (valuesObject: MinMaxValuesObjectType) => {
         setCounterState(prev => ({
             ...prev,
-            maxValue: valuesObject.maxValue, 
-            minValue: valuesObject.minValue, 
+            maxValue: valuesObject.maxValue,
+            minValue: valuesObject.minValue,
             screenValue: valuesObject.minValue
         }))
         saveToLocalStorage(valuesObject)
@@ -70,14 +77,14 @@ export function AppCounter() {
     }
 
     const resetScreenValue = () => {
-        setInputError(false)
+        setGlobalError(false)
         setCounterState(prev => ({ ...prev, screenValue: counterState.minValue }))
     }
 
 
 
 
-    const setInputError = (isError: boolean) => {
+    const setGlobalError = (isError: boolean) => {
         setCounterState(prev => ({ ...prev, inputError: isError }))
     }
 
@@ -93,7 +100,7 @@ export function AppCounter() {
         setCounterState(prev => ({ ...prev, resetButtonDisabled: isDisabled }))
     }
 
-    const saveToLocalStorage = (values: ValuesObjectType) => {
+    const saveToLocalStorage = (values: MinMaxValuesObjectType) => {
         localStorage.setItem('localCounterState', JSON.stringify(values))
     }
 
@@ -102,7 +109,7 @@ export function AppCounter() {
         if (localStorageValues !== null && localStorageValues !== undefined) {
             const localStorageParsedValues = JSON.parse(localStorageValues)
             console.log(localStorageParsedValues)
-            setValues({
+            setMinMaxValues({
                 maxValue: localStorageParsedValues.maxValue,
                 minValue: localStorageParsedValues.minValue
             })
@@ -119,8 +126,8 @@ export function AppCounter() {
         <Wrapper direction="row" variant="common" gap="20px" className='App'>
             <Settings
                 globalCounterState={counterState}
-                setValues={setValues}
-                setInputError={setInputError}
+                setValues={setMinMaxValues}
+                setInputError={setGlobalError}
                 setIsSetButtonDisabled={setIsSetButtonDisabled}
             />
             <Display

@@ -3,21 +3,21 @@ import { Button } from "./Button"
 import { Input } from "./Input"
 import { Wrapper } from "./Wrapper.styled"
 import { useEffect, useState } from "react"
-import { CounterState } from "../AppCounter"
+import { GlobalCounterState } from "../AppCounter"
 
 type SettingsPropsType = {
-    globalCounterState: CounterState
-    setValues: (valuesObject: ValuesObjectType) => void
+    globalCounterState: GlobalCounterState
+    setValues: (valuesObject: MinMaxValuesObjectType) => void
     setInputError: (isError: boolean) => void
     setIsSetButtonDisabled: (isDisabled: boolean) => void
 }
-export type ValuesObjectType = {
+export type MinMaxValuesObjectType = {
     maxValue: string
     minValue: string
 }
 
 export const Settings = (props: SettingsPropsType) => {
-    const [inputsLocalState, setInputsLocalState] = useState<ValuesObjectType>({
+    const [inputsLocalState, setInputsLocalState] = useState<MinMaxValuesObjectType>({
         maxValue: props.globalCounterState.maxValue,
         minValue: props.globalCounterState.minValue
     })
@@ -26,11 +26,7 @@ export const Settings = (props: SettingsPropsType) => {
         isMinValueError: false
     })
 
-    useEffect(() => {
-        setInputsLocalState({ ...inputsLocalState, maxValue: props.globalCounterState.maxValue, minValue: props.globalCounterState.minValue })
-    }, [props.globalCounterState.maxValue, props.globalCounterState.minValue])
-
-    useEffect(() => {
+    const localInputsErrorsControlLogic = () => {
         if (Number(inputsLocalState.minValue) < 0 && Number(inputsLocalState.maxValue) < 0) {
             setInputLocalError({ ...inputLocalError, isMaxValueError: true, isMinValueError: true })
             props.setIsSetButtonDisabled(true)
@@ -56,6 +52,14 @@ export const Settings = (props: SettingsPropsType) => {
             props.setIsSetButtonDisabled(false)
             props.setInputError(false)
         }
+    }
+    useEffect(() => {
+        //set props values from LocalStorage
+        setInputsLocalState({ ...inputsLocalState, maxValue: props.globalCounterState.maxValue, minValue: props.globalCounterState.minValue })
+    }, [props.globalCounterState.maxValue, props.globalCounterState.minValue])
+
+    useEffect(() => {
+        localInputsErrorsControlLogic()
     }, [inputsLocalState.maxValue, inputsLocalState.minValue])
 
     const onSetClickHandler = () => {
