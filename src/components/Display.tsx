@@ -15,7 +15,7 @@ export const Display = (props: DisplayPropsType) => {
     const ERROR_MSG = "Incorect value"
     const HELP_MSG = "Enter values and press \"set\""
     const [displayValue, setDisplayValue] = useState(HELP_MSG)
-    
+
     const displayControlLogic = () => {
         if (props.globalCounterState.inputError) {
             if (Number(props.globalCounterState.screenValue) >= Number(props.globalCounterState.maxValue)) {
@@ -58,7 +58,13 @@ export const Display = (props: DisplayPropsType) => {
     }
 
     return (
-        <Wrapper direction='column' variant='bordered' justify="space-between" padding="20px" minHeight="200px" gap="20px">
+        <Wrapper
+            direction='column'
+            variant='bordered'
+            justify="space-between"
+            padding="20px"
+            minheight="200px" gap="20px"
+        >
             <Screen displayValue={displayValue}
                 isInputError={props.globalCounterState.inputError}
             />

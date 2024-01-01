@@ -5,14 +5,14 @@ type WrapperPropsType = {
   direction: "column" | "row"
   gap?: string
   padding?: string
-  minHeight?: string
+  minheight?: string
   justify?: string
 }
 
 export const Wrapper = styled.div<WrapperPropsType>`
   display: flex;
   justify-content: ${props => props.justify || "center"};
-  min-height: ${props => props.minHeight || "0%"};
+  min-height: ${props => props.minheight || "0%"};
   flex-direction: ${props => props.direction};
   padding: ${props => props.padding || "0px"};
   border-radius: 10px;

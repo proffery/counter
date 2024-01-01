@@ -79,7 +79,13 @@ export const Settings = (props: SettingsPropsType) => {
 
 
     return (
-        <Wrapper direction="column" variant="bordered" minHeight="200px" padding="20px" gap="20px">
+        <Wrapper
+            direction="column"
+            variant="bordered"
+            minheight="200px"
+            padding="20px"
+            gap="20px"
+        >
             <Form>
                 <Input
                     value={inputsLocalState.maxValue}
