@@ -4,7 +4,7 @@ import styled, { css } from "styled-components"
 type InputPropsType = {
     label?: string
     isInputError: boolean
-    value: number
+    value: string
     onChange: (value: string) => void
 }
 
