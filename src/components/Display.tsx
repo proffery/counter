@@ -58,7 +58,7 @@ export const Display = (props: DisplayPropsType) => {
     }
 
     return (
-        <Wrapper direction='column' variant='bordered' padding="20px" gap="20px">
+        <Wrapper direction='column' variant='bordered' justify="space-between" padding="20px" minHeight="200px" gap="20px">
             <Screen displayValue={displayValue}
                 isInputError={props.globalCounterState.inputError}
             />

@@ -24,6 +24,7 @@ const StyledScreen = styled.div<StyledScreenType>`
     align-items: center;
     justify-content: center;
     height: 100%;
+    min-height: 110px;
     font-size: 28px;
     padding: 10px;
     max-width: 160px;

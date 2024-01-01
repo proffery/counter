@@ -30,7 +30,8 @@ export const counterReducer = (state: GlobalCounterState = initialState, action:
             return {
                 ...state,
                 maxValue: action.payload.valuesObject.maxValue,
-                minValue: action.payload.valuesObject.minValue
+                minValue: action.payload.valuesObject.minValue,
+                screenValue: action.payload.valuesObject.minValue
             }
         case INCREASE_SCREEN_VALUE:
             return {

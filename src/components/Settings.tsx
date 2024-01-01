@@ -53,10 +53,10 @@ export const Settings = (props: SettingsPropsType) => {
             props.setInputError(false)
         }
     }
-    useEffect(() => {
-        //set props values from LocalStorage
-        setInputsLocalState({ ...inputsLocalState, maxValue: props.globalCounterState.maxValue, minValue: props.globalCounterState.minValue })
-    }, [props.globalCounterState.maxValue, props.globalCounterState.minValue])
+    // useEffect(() => {
+    //     //set props values from LocalStorage
+    //     setInputsLocalState({ ...inputsLocalState, maxValue: props.globalCounterState.maxValue, minValue: props.globalCounterState.minValue })
+    // }, [props.globalCounterState.maxValue, props.globalCounterState.minValue])
 
     useEffect(() => {
         localInputsErrorsControlLogic()
@@ -79,7 +79,7 @@ export const Settings = (props: SettingsPropsType) => {
 
 
     return (
-        <Wrapper direction="column" variant="bordered" padding="20px" gap="20px">
+        <Wrapper direction="column" variant="bordered" minHeight="200px" padding="20px" gap="20px">
             <Form>
                 <Input
                     value={inputsLocalState.maxValue}

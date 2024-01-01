@@ -3,14 +3,17 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import {AppCounter} from './AppCounter';
 import reportWebVitals from './reportWebVitals';
+import { AppWithReduxCounter } from './AppWithReduxCounter';
+import { Provider } from 'react-redux';
+import { store } from './state/store';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(
-  <React.StrictMode>
-    <AppCounter />
-  </React.StrictMode>
+  <Provider store={store}>
+    <AppWithReduxCounter />
+  </Provider>
 );
 
 // If you want to start measuring performance in your app, pass a function

@@ -123,7 +123,7 @@ export function AppCounter() {
 
 
     return (
-        <Wrapper direction="row" variant="common" gap="20px" className='App'>
+        <Wrapper direction="row" variant="common" gap="20px" minHeight="150px" className='App'>
             <Settings
                 globalCounterState={counterState}
                 setValues={setMinMaxValues}

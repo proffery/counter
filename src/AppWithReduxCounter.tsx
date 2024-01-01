@@ -1,8 +1,12 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { Settings, MinMaxValuesObjectType } from './components/Settings';
 import { Wrapper } from './components/Wrapper.styled';
 import { Display } from './components/Display';
 import './App.css';
+import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
+import { ResetScreenValueAC, increaseScreenValueAC, setGlobalErrorAC, setIsAddButtonDisabledAC, setIsResetButtonDisabledAC, setIsSetButtonDisabledAC, setMinMaxValuesAC } from './state/counterReducer';
+import { AppRootStateType } from './state/store';
 
 
 export type GlobalCounterState = {
@@ -18,17 +22,9 @@ export type GlobalCounterState = {
 
 
 export function AppWithReduxCounter() {
+    const counterState = useSelector<AppRootStateType, GlobalCounterState>(store => store.counter)
+    const dispatch = useDispatch()
 
-    const [counterState, setCounterState] = useState<GlobalCounterState>({
-        minValue: '0',
-        maxValue: '5',
-        screenValue: '0',
-        step: '1',
-        inputError: false,
-        setButtonDisabled: true,
-        addButtonDisabled: false,
-        resetButtonDisabled: true
-    })
 
     const increaseValueControlLogic = () => {
         if (Number(counterState.screenValue) >= Number(counterState.maxValue)) {
@@ -51,10 +47,6 @@ export function AppWithReduxCounter() {
     }
 
     useEffect(() => {
-        getFromLocalStorage()
-    }, [])
-
-    useEffect(() => {
         increaseValueControlLogic();
     }, [counterState.screenValue, counterState.maxValue])
 
@@ -63,63 +55,58 @@ export function AppWithReduxCounter() {
     }, [counterState.screenValue, counterState.minValue])
 
     const setMinMaxValues = (valuesObject: MinMaxValuesObjectType) => {
-        setCounterState(prev => ({
-            ...prev,
-            maxValue: valuesObject.maxValue,
-            minValue: valuesObject.minValue,
-            screenValue: valuesObject.minValue
-        }))
-        saveToLocalStorage(valuesObject)
+        dispatch(setMinMaxValuesAC(valuesObject))
+        //saveToLocalStorage(valuesObject)
     }
 
     const increaseScreenValue = () => {
-        setCounterState(prev => ({ ...prev, screenValue: (Number(counterState.screenValue) + Number(counterState.step)).toString() }))
+        dispatch(increaseScreenValueAC())
     }
 
     const resetScreenValue = () => {
-        setGlobalError(false)
-        setCounterState(prev => ({ ...prev, screenValue: counterState.minValue }))
+        dispatch(ResetScreenValueAC())
     }
 
-
-
-
     const setGlobalError = (isError: boolean) => {
-        setCounterState(prev => ({ ...prev, inputError: isError }))
+        dispatch(setGlobalErrorAC(isError))
     }
 
     const setIsSetButtonDisabled = (isDisabled: boolean) => {
-        setCounterState(prev => ({ ...prev, setButtonDisabled: isDisabled }))
+        dispatch(setIsSetButtonDisabledAC(isDisabled))
     }
 
     const setIsAddButtonDisabled = (isDisabled: boolean) => {
-        setCounterState(prev => ({ ...prev, addButtonDisabled: isDisabled }))
+        dispatch(setIsAddButtonDisabledAC(isDisabled))
     }
 
     const setIsResetButtonDisabled = (isDisabled: boolean) => {
-        setCounterState(prev => ({ ...prev, resetButtonDisabled: isDisabled }))
+        dispatch(setIsResetButtonDisabledAC(isDisabled))
     }
 
-    const saveToLocalStorage = (values: MinMaxValuesObjectType) => {
-        localStorage.setItem('localCounterState', JSON.stringify(values))
-    }
+    // const saveToLocalStorage = (values: MinMaxValuesObjectType) => {
+    //     localStorage.setItem('localCounterState', JSON.stringify(values))
+    // }
 
-    const getFromLocalStorage = () => {
-        let localStorageValues = localStorage.getItem('localCounterState')
-        if (localStorageValues !== null && localStorageValues !== undefined) {
-            const localStorageParsedValues = JSON.parse(localStorageValues)
-            console.log(localStorageParsedValues)
-            setMinMaxValues({
-                maxValue: localStorageParsedValues.maxValue,
-                minValue: localStorageParsedValues.minValue
-            })
-            setIsSetButtonDisabled(true)
-        }
-        else {
-            saveToLocalStorage({ maxValue: counterState.maxValue, minValue: counterState.minValue })
-        }
+    // const saveToLocalStorage = (values: MinMaxValuesObjectType) => {
+    //     localStorage.setItem('localCounterState', JSON.stringify(values))
+    // }
 
-    }
+    // const getFromLocalStorage = () => {
+    //     let localStorageValues = localStorage.getItem('localCounterState')
+    //     if (localStorageValues !== null && localStorageValues !== undefined) {
+    //         const localStorageParsedValues = JSON.parse(localStorageValues)
+    //         console.log(localStorageParsedValues)
+    //         setMinMaxValues({
+    //             maxValue: localStorageParsedValues.maxValue,
+    //             minValue: localStorageParsedValues.minValue
+    //         })
+    //         setIsSetButtonDisabled(true)
+    //     }
+    //     else {
+    //         saveToLocalStorage({ maxValue: counterState.maxValue, minValue: counterState.minValue })
+    //     }
+
+    // }
 
 
     return (
