@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 import { Settings, MinMaxValuesObjectType } from './components/Settings';
 import { Wrapper } from './components/Wrapper.styled';
 import { Display } from './components/Display';
@@ -22,11 +22,12 @@ export type GlobalCounterState = {
 
 
 export function AppWithReduxCounter() {
+    console.log("APP RENDERED");
     const counterState = useSelector<AppRootStateType, GlobalCounterState>(store => store.counter)
     const dispatch = useDispatch()
 
 
-    const increaseValueControlLogic = () => {
+    const increaseValueControlLogic = useCallback(() => {
         if (Number(counterState.screenValue) >= Number(counterState.maxValue)) {
             setIsAddButtonDisabled(true);
             setGlobalError(true);
@@ -35,53 +36,53 @@ export function AppWithReduxCounter() {
             setIsAddButtonDisabled(false);
             setGlobalError(false);
         }
-    }
+    }, [counterState.maxValue, counterState.screenValue])
 
-    const resetButtonControlLogic = () => {
+    const resetButtonControlLogic = useCallback(() => {
         if (Number(counterState.screenValue) === Number(counterState.minValue)) {
             setIsResetButtonDisabled(true);
         }
         else {
             setIsResetButtonDisabled(false);
         }
-    }
+    },[counterState.minValue, counterState.screenValue])
 
     useEffect(() => {
         increaseValueControlLogic();
-    }, [counterState.screenValue, counterState.maxValue])
+    }, [counterState.screenValue])
 
     useEffect(() => {
         resetButtonControlLogic();
     }, [counterState.screenValue, counterState.minValue])
 
-    const setMinMaxValues = (valuesObject: MinMaxValuesObjectType) => {
+    const setMinMaxValues = useCallback((valuesObject: MinMaxValuesObjectType) => {
         dispatch(setMinMaxValuesAC(valuesObject))
         //saveToLocalStorage(valuesObject)
-    }
+    },[])
 
-    const increaseScreenValue = () => {
+    const increaseScreenValue = useCallback(() => {
         dispatch(increaseScreenValueAC())
-    }
+    },[])
 
-    const resetScreenValue = () => {
+    const resetScreenValue = useCallback(() => {
         dispatch(ResetScreenValueAC())
-    }
+    },[])
 
-    const setGlobalError = (isError: boolean) => {
+    const setGlobalError = useCallback((isError: boolean) => {
         dispatch(setInputGlobalErrorAC(isError))
-    }
+    },[])
 
-    const setIsSetButtonDisabled = (isDisabled: boolean) => {
+    const setIsSetButtonDisabled = useCallback((isDisabled: boolean) => {
         dispatch(setIsSetButtonDisabledAC(isDisabled))
-    }
+    },[])
 
-    const setIsAddButtonDisabled = (isDisabled: boolean) => {
+    const setIsAddButtonDisabled = useCallback((isDisabled: boolean) => {
         dispatch(setIsAddButtonDisabledAC(isDisabled))
-    }
+    },[])
 
-    const setIsResetButtonDisabled = (isDisabled: boolean) => {
+    const setIsResetButtonDisabled = useCallback((isDisabled: boolean) => {
         dispatch(setIsResetButtonDisabledAC(isDisabled))
-    }
+    },[])
 
     // const saveToLocalStorage = (values: MinMaxValuesObjectType) => {
     //     localStorage.setItem('localCounterState', JSON.stringify(values))
@@ -112,13 +113,20 @@ export function AppWithReduxCounter() {
     return (
         <Wrapper direction="row" variant="common" gap="20px" className='App'>
             <Settings
-                globalCounterState={counterState}
+                maxValue={counterState.maxValue}
+                minValue={counterState.minValue}
+                setButtonDisabled={counterState.setButtonDisabled}
                 setValues={setMinMaxValues}
                 setInputError={setGlobalError}
                 setIsSetButtonDisabled={setIsSetButtonDisabled}
             />
             <Display
-                globalCounterState={counterState}
+                maxValue={counterState.maxValue}
+                screenValue={counterState.screenValue}
+                inputError={counterState.inputError}
+                setButtonDisabled={counterState.setButtonDisabled}
+                addButtonDisabled={counterState.addButtonDisabled}
+                resetButtonDisabled={counterState.resetButtonDisabled}
                 increaseScreenValue={increaseScreenValue}
                 resetScreenValue={resetScreenValue}
                 setIsAddButtonDisabled={setIsAddButtonDisabled}

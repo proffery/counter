@@ -1,11 +1,13 @@
+import { memo } from "react"
 import styled, { css } from "styled-components"
 
 type ScreenPropsType = {
     displayValue: string
     isInputError: boolean
 }
-export const Screen = (props: ScreenPropsType) => {
-
+export const Screen = memo((props: ScreenPropsType) => {
+    console.log("SCREEN RENDERED");
+    
     return (
         <StyledScreen
             error={props.isInputError}
@@ -13,7 +15,7 @@ export const Screen = (props: ScreenPropsType) => {
             {props.displayValue}
         </StyledScreen>
     )
-}
+})
 
 type StyledScreenType = {
     error?: boolean

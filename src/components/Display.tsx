@@ -1,25 +1,30 @@
 import { Wrapper } from "./Wrapper.styled"
 import { Button } from "./Button"
 import { Screen } from "./Screen"
-import { GlobalCounterState } from "../AppCounter"
-import { useEffect, useState } from "react"
+import { memo, useCallback, useEffect, useState } from "react"
 
 type DisplayPropsType = {
-    globalCounterState: GlobalCounterState
+    maxValue:string
+    screenValue:string
+    inputError: boolean
+    setButtonDisabled: boolean
+    addButtonDisabled: boolean
+    resetButtonDisabled: boolean
     increaseScreenValue: () => void
     resetScreenValue: () => void
     setIsAddButtonDisabled: (isDisabled: boolean) => void
 }
 
-export const Display = (props: DisplayPropsType) => {
+export const Display = memo((props: DisplayPropsType) => {
+    console.log("DISPLAY RENDERED");
     const ERROR_MSG = "Incorect value"
     const HELP_MSG = "Enter values and press \"set\""
     const [displayValue, setDisplayValue] = useState(HELP_MSG)
 
     const displayControlLogic = () => {
-        if (props.globalCounterState.inputError) {
-            if (Number(props.globalCounterState.screenValue) >= Number(props.globalCounterState.maxValue)) {
-                setDisplayValue(props.globalCounterState.screenValue)
+        if (props.inputError) {
+            if (Number(props.screenValue) >= Number(props.maxValue)) {
+                setDisplayValue(props.screenValue)
                 props.setIsAddButtonDisabled(true)
             }
             else {
@@ -28,8 +33,8 @@ export const Display = (props: DisplayPropsType) => {
             }
         }
         else {
-            if (props.globalCounterState.setButtonDisabled) {
-                setDisplayValue(props.globalCounterState.screenValue)
+            if (props.setButtonDisabled) {
+                setDisplayValue(props.screenValue)
                 props.setIsAddButtonDisabled(false)
             }
             else {
@@ -41,21 +46,15 @@ export const Display = (props: DisplayPropsType) => {
 
     useEffect(() => {
         displayControlLogic()
-    }, [
-        props.globalCounterState.resetButtonDisabled,
-        props.globalCounterState.addButtonDisabled,
-        props.globalCounterState.screenValue,
-        props.globalCounterState.inputError,
-        props.globalCounterState.setButtonDisabled
-    ])
+    }, [props.screenValue, props.setButtonDisabled, props.resetButtonDisabled])
 
-    const incHandler = () => {
+    const incHandler = useCallback(() => {
         props.increaseScreenValue()
-    }
+    },[props.increaseScreenValue])
 
-    const resetHandler = () => {
+    const resetHandler = useCallback(() => {
         props.resetScreenValue()
-    }
+    },[props.resetScreenValue])
 
     return (
         <Wrapper
@@ -66,16 +65,16 @@ export const Display = (props: DisplayPropsType) => {
             minheight="200px" gap="20px"
         >
             <Screen displayValue={displayValue}
-                isInputError={props.globalCounterState.inputError}
+                isInputError={props.inputError}
             />
             <Wrapper direction='row' variant='common' gap="20px">
                 <Button name='Add'
                     onClick={incHandler}
-                    isDisabled={props.globalCounterState.addButtonDisabled} />
+                    isDisabled={props.addButtonDisabled} />
                 <Button name='Reset'
                     onClick={resetHandler}
-                    isDisabled={props.globalCounterState.resetButtonDisabled} />
+                    isDisabled={props.resetButtonDisabled} />
             </Wrapper>
         </Wrapper>
     )
-}
+})

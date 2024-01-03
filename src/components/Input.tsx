@@ -1,4 +1,4 @@
-import { ChangeEvent } from "react"
+import { ChangeEvent, memo } from "react"
 import styled, { css } from "styled-components"
 
 type InputPropsType = {
@@ -8,8 +8,8 @@ type InputPropsType = {
     onChange: (value: string) => void
 }
 
-export const Input = (props: InputPropsType) => {
-
+export const Input = memo((props: InputPropsType) => {
+    console.log("INPUT RENDERED");
     const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
         props.onChange(e.currentTarget.value)
     }
@@ -28,7 +28,7 @@ export const Input = (props: InputPropsType) => {
         </div>
 
     )
-}
+})
 
 type StyledInputType = {
     error?: boolean

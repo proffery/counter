@@ -2,11 +2,12 @@ import styled from "styled-components"
 import { Button } from "./Button"
 import { Input } from "./Input"
 import { Wrapper } from "./Wrapper.styled"
-import { useEffect, useState } from "react"
-import { GlobalCounterState } from "../AppCounter"
+import { memo, useCallback, useEffect, useState } from "react"
 
 type SettingsPropsType = {
-    globalCounterState: GlobalCounterState
+    maxValue: string
+    minValue: string
+    setButtonDisabled: boolean
     setValues: (valuesObject: MinMaxValuesObjectType) => void
     setInputError: (isError: boolean) => void
     setIsSetButtonDisabled: (isDisabled: boolean) => void
@@ -16,10 +17,11 @@ export type MinMaxValuesObjectType = {
     minValue: string
 }
 
-export const Settings = (props: SettingsPropsType) => {
+export const Settings = memo((props: SettingsPropsType) => {
+    console.log("SETTINGS RENDERED");
     const [inputsLocalState, setInputsLocalState] = useState<MinMaxValuesObjectType>({
-        maxValue: props.globalCounterState.maxValue,
-        minValue: props.globalCounterState.minValue
+        maxValue: props.maxValue,
+        minValue: props.minValue
     })
     const [inputLocalError, setInputLocalError] = useState({
         isMaxValueError: false,
@@ -62,20 +64,20 @@ export const Settings = (props: SettingsPropsType) => {
         localInputsErrorsControlLogic()
     }, [inputsLocalState.maxValue, inputsLocalState.minValue])
 
-    const onSetClickHandler = () => {
+    const onSetClickHandler = useCallback(() => {
         props.setIsSetButtonDisabled(true)
         props.setValues(inputsLocalState)
-    }
+    }, [props.setValues, props.setIsSetButtonDisabled])
 
-    const maxValueOnChangeHandler = (value: string) => {
+    const maxValueOnChangeHandler = useCallback((value: string) => {
         setInputsLocalState({ ...inputsLocalState, maxValue: value })
         props.setIsSetButtonDisabled(false)
-    }
+    }, [inputsLocalState.maxValue, props.setIsSetButtonDisabled])
 
-    const minValueOnChangeHandler = (value: string) => {
+    const minValueOnChangeHandler = useCallback((value: string) => {
         setInputsLocalState({ ...inputsLocalState, minValue: value })
         props.setIsSetButtonDisabled(false)
-    }
+    }, [inputsLocalState.minValue, props.setIsSetButtonDisabled])
 
 
     return (
@@ -101,11 +103,11 @@ export const Settings = (props: SettingsPropsType) => {
                 />
                 <Button name="Set"
                     onClick={onSetClickHandler}
-                    isDisabled={props.globalCounterState.setButtonDisabled} />
+                    isDisabled={props.setButtonDisabled} />
             </Form>
         </Wrapper>
     )
-}
+})
 
 const Form = styled.form`
     display: flex;

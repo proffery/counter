@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import {AppCounter} from './AppCounter';
 import reportWebVitals from './reportWebVitals';
 import { AppWithReduxCounter } from './AppWithReduxCounter';
 import { Provider } from 'react-redux';

@@ -1,3 +1,4 @@
+import { memo } from "react"
 import styled, { css } from "styled-components"
 
 type ButtonPropsType = {
@@ -7,7 +8,8 @@ type ButtonPropsType = {
     onClick: () => void
 }
 
-export const Button = (props: ButtonPropsType) => {
+export const Button = memo((props: ButtonPropsType) => {
+    console.log("BUTTON "+ props.name + " RENDERED" );
     const onClickHandler = () => {
         props.onClick()
     }
@@ -18,7 +20,7 @@ export const Button = (props: ButtonPropsType) => {
             type={props.type || "button"}
         >{props.name}</StyledButton>
     )
-}
+})
 
 type StyledButtonType = {
     disabled?: boolean
