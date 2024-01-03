@@ -39,7 +39,7 @@ const StyledInput = styled.input<StyledInputType>`
     display: flex;
     min-width: 160px;
     width: 100%;
-    background-color: transparent;
+    background-color: blueviolet;
     border: 1px solid blueviolet;
     padding: 10px;
     width: 80px;

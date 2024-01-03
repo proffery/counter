@@ -1,7 +1,7 @@
 import { memo } from "react"
 import styled, { css } from "styled-components"
 
-type ButtonPropsType = {
+export type ButtonPropsType = {
     name: string
     type?: "submit" | "reset" | "button"
     isDisabled?: boolean
@@ -9,7 +9,7 @@ type ButtonPropsType = {
 }
 
 export const Button = memo((props: ButtonPropsType) => {
-    console.log("BUTTON "+ props.name + " RENDERED" );
+    console.log("BUTTON " + props.name + " RENDERED");
     const onClickHandler = () => {
         props.onClick()
     }
@@ -26,15 +26,21 @@ type StyledButtonType = {
     disabled?: boolean
 }
 
-const StyledButton = styled.button<StyledButtonType>`
+export const StyledButton = styled.button<StyledButtonType>`
     align-self: center;
-    background-color: transparent;
+    text-align: center;
+    background-color: blueviolet;
     border: 1px solid blueviolet;
-    padding: 10px 20px;
-    width: 80px;
+    padding: 10px 15px;
     color: white;
+    min-width: 70px;
     border-radius: 10px;
+    transition: all .1s ease-in-out;
     ${props => props.disabled === true && css<StyledButtonType>`
         opacity: 0.5;
+        transform: none
     `}
+    &:active {
+        transform: scale(1.1)
+    }
 `
