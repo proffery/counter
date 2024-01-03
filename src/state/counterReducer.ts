@@ -42,7 +42,6 @@ export const counterReducer = (state: GlobalCounterState = initialState, action:
             return {
                 ...state,
                 screenValue: state.minValue,
-                inputError: false
             }
         case SET_GLOBAL_ERROR:
             return {
@@ -93,8 +92,8 @@ export const ResetScreenValueAC = () => {
     } as const
 }
 
-type SetGlobalErrorACType = ReturnType<typeof setGlobalErrorAC>
-export const setGlobalErrorAC = (isError: boolean) => {
+type SetGlobalErrorACType = ReturnType<typeof setInputGlobalErrorAC>
+export const setInputGlobalErrorAC = (isError: boolean) => {
     return {
         type: SET_GLOBAL_ERROR,
         payload: {

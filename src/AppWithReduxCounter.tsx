@@ -5,7 +5,7 @@ import { Display } from './components/Display';
 import './App.css';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
-import { ResetScreenValueAC, increaseScreenValueAC, setGlobalErrorAC, setIsAddButtonDisabledAC, setIsResetButtonDisabledAC, setIsSetButtonDisabledAC, setMinMaxValuesAC } from './state/counterReducer';
+import { ResetScreenValueAC, increaseScreenValueAC, setInputGlobalErrorAC, setIsAddButtonDisabledAC, setIsResetButtonDisabledAC, setIsSetButtonDisabledAC, setMinMaxValuesAC } from './state/counterReducer';
 import { AppRootStateType } from './state/store';
 
 
@@ -68,7 +68,7 @@ export function AppWithReduxCounter() {
     }
 
     const setGlobalError = (isError: boolean) => {
-        dispatch(setGlobalErrorAC(isError))
+        dispatch(setInputGlobalErrorAC(isError))
     }
 
     const setIsSetButtonDisabled = (isDisabled: boolean) => {
