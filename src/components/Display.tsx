@@ -1,11 +1,11 @@
-import { Wrapper } from "./Wrapper.styled"
+import { Wrapper } from "./Wrapper"
 import { Button } from "./Button"
 import { Screen } from "./Screen"
 import { memo, useCallback, useEffect, useState } from "react"
 
 type DisplayPropsType = {
-    maxValue:string
-    screenValue:string
+    maxValue: string
+    screenValue: string
     inputError: boolean
     setButtonDisabled: boolean
     addButtonDisabled: boolean
@@ -46,15 +46,15 @@ export const Display = memo((props: DisplayPropsType) => {
 
     useEffect(() => {
         displayControlLogic()
-    }, [props.screenValue, props.setButtonDisabled, props.resetButtonDisabled])
+    }, [props.screenValue, props.setButtonDisabled, props.resetButtonDisabled, props.inputError])
 
     const incHandler = useCallback(() => {
         props.increaseScreenValue()
-    },[props.increaseScreenValue])
+    }, [props.increaseScreenValue])
 
     const resetHandler = useCallback(() => {
         props.resetScreenValue()
-    },[props.resetScreenValue])
+    }, [props.resetScreenValue])
 
     return (
         <Wrapper
@@ -62,7 +62,9 @@ export const Display = memo((props: DisplayPropsType) => {
             variant='bordered'
             justify="space-between"
             padding="20px"
-            minheight="200px" gap="20px"
+            minheight="200px"
+            minwidth="200px"
+            gap="20px"
         >
             <Screen displayValue={displayValue}
                 isInputError={props.inputError}

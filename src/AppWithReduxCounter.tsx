@@ -1,12 +1,11 @@
-import { useCallback, useEffect } from 'react';
+import { memo, useCallback, useEffect } from 'react';
 import { Settings, MinMaxValuesObjectType } from './components/Settings';
-import { Wrapper } from './components/Wrapper.styled';
 import { Display } from './components/Display';
-import './App.css';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 import { ResetScreenValueAC, increaseScreenValueAC, setInputGlobalErrorAC, setIsAddButtonDisabledAC, setIsResetButtonDisabledAC, setIsSetButtonDisabledAC, setMinMaxValuesAC } from './state/counterReducer';
 import { AppRootStateType } from './state/store';
+import { Wrapper } from './components/Wrapper';
 
 
 export type GlobalCounterState = {
@@ -21,7 +20,7 @@ export type GlobalCounterState = {
 }
 
 
-export function AppWithReduxCounter() {
+export const AppWithReduxCounter = memo(() => {
     console.log("APP RENDERED");
     const counterState = useSelector<AppRootStateType, GlobalCounterState>(store => store.counter)
     const dispatch = useDispatch()
@@ -45,7 +44,7 @@ export function AppWithReduxCounter() {
         else {
             setIsResetButtonDisabled(false);
         }
-    },[counterState.minValue, counterState.screenValue])
+    }, [counterState.minValue, counterState.screenValue])
 
     useEffect(() => {
         increaseValueControlLogic();
@@ -58,31 +57,31 @@ export function AppWithReduxCounter() {
     const setMinMaxValues = useCallback((valuesObject: MinMaxValuesObjectType) => {
         dispatch(setMinMaxValuesAC(valuesObject))
         //saveToLocalStorage(valuesObject)
-    },[])
+    }, [])
 
     const increaseScreenValue = useCallback(() => {
         dispatch(increaseScreenValueAC())
-    },[])
+    }, [])
 
     const resetScreenValue = useCallback(() => {
         dispatch(ResetScreenValueAC())
-    },[])
+    }, [])
 
     const setGlobalError = useCallback((isError: boolean) => {
         dispatch(setInputGlobalErrorAC(isError))
-    },[])
+    }, [])
 
     const setIsSetButtonDisabled = useCallback((isDisabled: boolean) => {
         dispatch(setIsSetButtonDisabledAC(isDisabled))
-    },[])
+    }, [])
 
     const setIsAddButtonDisabled = useCallback((isDisabled: boolean) => {
         dispatch(setIsAddButtonDisabledAC(isDisabled))
-    },[])
+    }, [])
 
     const setIsResetButtonDisabled = useCallback((isDisabled: boolean) => {
         dispatch(setIsResetButtonDisabledAC(isDisabled))
-    },[])
+    }, [])
 
     // const saveToLocalStorage = (values: MinMaxValuesObjectType) => {
     //     localStorage.setItem('localCounterState', JSON.stringify(values))
@@ -111,7 +110,7 @@ export function AppWithReduxCounter() {
 
 
     return (
-        <Wrapper direction="row" variant="common" gap="20px" className='App'>
+        <Wrapper direction="row" variant="common" gap="20px">
             <Settings
                 maxValue={counterState.maxValue}
                 minValue={counterState.minValue}
@@ -133,4 +132,4 @@ export function AppWithReduxCounter() {
             />
         </Wrapper>
     )
-}
+})

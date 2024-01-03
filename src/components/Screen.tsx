@@ -29,7 +29,7 @@ const StyledScreen = styled.div<StyledScreenType>`
     min-height: 110px;
     font-size: 28px;
     padding: 10px;
-    max-width: 160px;
+    width: 100%;
     border: 1px solid blueviolet;
     border-radius: 10px;
     color: white;

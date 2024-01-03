@@ -1,8 +1,8 @@
 import styled from "styled-components"
 import { Button } from "./Button"
 import { Input } from "./Input"
-import { Wrapper } from "./Wrapper.styled"
 import { memo, useCallback, useEffect, useState } from "react"
+import { Wrapper } from "./Wrapper"
 
 type SettingsPropsType = {
     maxValue: string
@@ -82,11 +82,11 @@ export const Settings = memo((props: SettingsPropsType) => {
 
     return (
         <Wrapper
-            direction="column"
-            variant="bordered"
-            minheight="200px"
-            padding="20px"
-            gap="20px"
+            direction={"column"}
+            variant={"bordered"}
+            minheight={"200px"}
+            padding={"20px"}
+            gap={"20px"}
         >
             <Form>
                 <Input
