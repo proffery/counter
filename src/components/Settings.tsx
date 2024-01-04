@@ -67,7 +67,7 @@ export const Settings = memo((props: SettingsPropsType) => {
     const onSetClickHandler = useCallback(() => {
         props.setIsSetButtonDisabled(true)
         props.setValues(inputsLocalState)
-    }, [props.setValues, props.setIsSetButtonDisabled])
+    }, [props.setValues, props.setButtonDisabled])
 
     const maxValueOnChangeHandler = useCallback((value: string) => {
         setInputsLocalState({ ...inputsLocalState, maxValue: value })
@@ -84,7 +84,8 @@ export const Settings = memo((props: SettingsPropsType) => {
         <Wrapper
             direction={"column"}
             variant={"bordered"}
-            minheight={"200px"}
+            height={"250px"}
+            width={"250px"}
             padding={"20px"}
             gap={"20px"}
         >
@@ -111,6 +112,8 @@ export const Settings = memo((props: SettingsPropsType) => {
 
 const Form = styled.form`
     display: flex;
+    align-items: center;
+    justify-content: space-between;
     flex-direction: column;
     gap: 20px;
 `

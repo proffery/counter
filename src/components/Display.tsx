@@ -17,15 +17,21 @@ type DisplayPropsType = {
 
 export const Display = memo((props: DisplayPropsType) => {
     console.log("DISPLAY RENDERED");
-    const ERROR_MSG = "Incorect value"
-    const HELP_MSG = "Enter values and press \"set\""
+    const ERROR_MSG = "Incorect input value"
+    const HELP_MSG = "Set values and press \"set\" button"
     const [displayValue, setDisplayValue] = useState(HELP_MSG)
 
     const displayControlLogic = () => {
         if (props.inputError) {
             if (Number(props.screenValue) >= Number(props.maxValue)) {
-                setDisplayValue(props.screenValue)
-                props.setIsAddButtonDisabled(true)
+                if (props.setButtonDisabled) {
+                    setDisplayValue(props.screenValue)
+                    props.setIsAddButtonDisabled(true)
+                }
+                else{
+                    setDisplayValue(ERROR_MSG)
+                    props.setIsAddButtonDisabled(true)
+                }
             }
             else {
                 setDisplayValue(ERROR_MSG)
@@ -58,13 +64,13 @@ export const Display = memo((props: DisplayPropsType) => {
 
     return (
         <Wrapper
-            direction='column'
-            variant='bordered'
-            justify="space-between"
-            padding="20px"
-            minheight="200px"
-            minwidth="200px"
-            gap="20px"
+            direction={'column'}
+            variant={'bordered'}
+            justify={"space-around"}
+            padding={"20px"}
+            height={"250px"}
+            width="250px"
+            gap={"20px"}
         >
             <Screen displayValue={displayValue}
                 isInputError={props.inputError}

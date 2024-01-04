@@ -3,6 +3,7 @@ import styled, { css } from "styled-components"
 
 type InputPropsType = {
     label?: string
+    type?: 'number' | 'text' | 'password'
     isInputError: boolean
     value: string
     onChange: (value: string) => void
@@ -19,7 +20,7 @@ export const Input = memo((props: InputPropsType) => {
             {props.label &&
                 <StyledLabel htmlFor={props.label}>{props.label}</StyledLabel>}
             <StyledInput
-                type="number"
+                type={props.type || "number"}
                 id={props.label}
                 value={props.value}
                 onChange={onChangeHandler}
@@ -37,7 +38,8 @@ type StyledInputType = {
 const StyledInput = styled.input<StyledInputType>`
     text-align: right;
     display: flex;
-    min-width: 160px;
+    align-items: center;
+    min-width: 180px;
     width: 100%;
     background-color: blueviolet;
     border: 1px solid blueviolet;

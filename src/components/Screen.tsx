@@ -24,12 +24,13 @@ type StyledScreenType = {
 const StyledScreen = styled.div<StyledScreenType>`
     display: flex;
     align-items: center;
+    text-align: center;
     justify-content: center;
-    height: 100%;
-    min-height: 110px;
+    height: 70%;
     font-size: 28px;
     padding: 10px;
-    width: 100%;
+    width: 90%;
+    background-color: blueviolet;
     border: 1px solid blueviolet;
     border-radius: 10px;
     color: white;

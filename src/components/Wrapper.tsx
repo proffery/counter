@@ -6,10 +6,11 @@ type WrapperPropsType = {
   direction: "column" | "row"
   gap?: string
   padding?: string
-  minheight?: string
-  minwidth?: string
+  height?: string
   justify?: string
   children: ReactNode
+  width?: string
+  align?: string
 }
 export const Wrapper = memo((props: WrapperPropsType) => {
   return (
@@ -18,26 +19,18 @@ export const Wrapper = memo((props: WrapperPropsType) => {
       direction={props.direction}
       gap={props.gap}
       padding={props.padding}
-      minheight={props.minheight}
-      width={props.minwidth}
+      height={props.height}
+      width={props.width}
       justify={props.justify}
     >{props.children}</StyledWrapper>
   )
 })
 
-type StyledWrapperPropsType = {
-  variant: "common" | "bordered"
-  direction: "column" | "row"
-  gap?: string
-  padding?: string
-  minheight?: string
-  width?: string
-  justify?: string
-}
-const StyledWrapper = styled.div<StyledWrapperPropsType>`
+const StyledWrapper = styled.div<WrapperPropsType>`
   display: flex;
+  align-items: ${props => props.align || "center"};;
   justify-content: ${props => props.justify || "center"};
-  min-height: ${props => props.minheight || "0%"};
+  height: ${props => props.height || "0%"};
   width: ${props => props.width || "100%"};;
   flex-direction: ${props => props.direction};
   padding: ${props => props.padding || "0px"};
