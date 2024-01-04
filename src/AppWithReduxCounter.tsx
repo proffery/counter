@@ -3,7 +3,15 @@ import { Settings, MinMaxValuesObjectType } from './components/Settings';
 import { Display } from './components/Display';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
-import { ResetScreenValueAC, increaseScreenValueAC, setInputGlobalErrorAC, setIsAddButtonDisabledAC, setIsResetButtonDisabledAC, setIsSetButtonDisabledAC, setMinMaxValuesAC } from './state/counterReducer';
+import {
+    ResetScreenValueAC,
+    increaseScreenValueAC,
+    setInputGlobalErrorAC,
+    setIsAddButtonDisabledAC,
+    setIsResetButtonDisabledAC,
+    setIsSetButtonDisabledAC,
+    setMinMaxValuesAC
+} from './state/counterReducer';
 import { AppRootStateType } from './state/store';
 import { Wrapper } from './components/Wrapper';
 
@@ -12,7 +20,6 @@ export type GlobalCounterState = {
     minValue: string
     maxValue: string
     screenValue: string
-    step: string
     inputError: boolean
     setButtonDisabled: boolean
     addButtonDisabled: boolean
@@ -24,7 +31,6 @@ export const AppWithReduxCounter = memo(() => {
     console.log("APP RENDERED");
     const counterState = useSelector<AppRootStateType, GlobalCounterState>(store => store.counter)
     const dispatch = useDispatch()
-
 
     const increaseValueControlLogic = useCallback(() => {
         if (Number(counterState.screenValue) >= Number(counterState.maxValue)) {

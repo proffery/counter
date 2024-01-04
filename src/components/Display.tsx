@@ -62,6 +62,8 @@ export const Display = memo((props: DisplayPropsType) => {
         props.resetScreenValue()
     }, [props.resetScreenValue])
 
+    // const isAddButtonDisabled = props.maxValue === props.screenValue
+    
     return (
         <Wrapper
             direction={'column'}

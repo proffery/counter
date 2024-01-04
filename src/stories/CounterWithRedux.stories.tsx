@@ -20,4 +20,4 @@ const meta: Meta<typeof AppWithReduxCounter> = {
 export default meta;
 type Story = StoryObj<typeof AppWithReduxCounter>;
 // More on writing stories with args: https://storybook.js.org/docs/writing-stories/args
-export const ValuesIsNotSettedNoErrors: Story = {}
+export const ReduxCounter: Story = {}
