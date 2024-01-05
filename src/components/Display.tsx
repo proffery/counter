@@ -24,14 +24,8 @@ export const Display = memo((props: DisplayPropsType) => {
     const displayControlLogic = () => {
         if (props.inputError) {
             if (Number(props.screenValue) >= Number(props.maxValue)) {
-                if (props.setButtonDisabled) {
-                    setDisplayValue(props.screenValue)
-                    props.setIsAddButtonDisabled(true)
-                }
-                else{
-                    setDisplayValue(ERROR_MSG)
-                    props.setIsAddButtonDisabled(true)
-                }
+                setDisplayValue(props.screenValue)
+                props.setIsAddButtonDisabled(true)
             }
             else {
                 setDisplayValue(ERROR_MSG)
@@ -52,7 +46,13 @@ export const Display = memo((props: DisplayPropsType) => {
 
     useEffect(() => {
         displayControlLogic()
-    }, [props.screenValue, props.setButtonDisabled, props.resetButtonDisabled, props.inputError])
+    }, [
+        props.resetButtonDisabled,
+        props.addButtonDisabled,
+        props.screenValue,
+        props.inputError,
+        props.setButtonDisabled
+    ])
 
     const incHandler = useCallback(() => {
         props.increaseScreenValue()
@@ -63,7 +63,7 @@ export const Display = memo((props: DisplayPropsType) => {
     }, [props.resetScreenValue])
 
     // const isAddButtonDisabled = props.maxValue === props.screenValue
-    
+
     return (
         <Wrapper
             direction={'column'}

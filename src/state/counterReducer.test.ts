@@ -1,6 +1,7 @@
 import { GlobalCounterState } from "../AppWithReduxCounter"
-import { ResetScreenValueAC, counterReducer, increaseScreenValueAC, setInputGlobalErrorAC, setIsAddButtonDisabledAC, setIsResetButtonDisabledAC, setIsSetButtonDisabledAC, setMinMaxValuesAC } from "./counterReducer"
+import { ResetScreenValueAC, STEP, counterReducer, increaseScreenValueAC, setInputGlobalErrorAC, setIsAddButtonDisabledAC, setIsResetButtonDisabledAC, setIsSetButtonDisabledAC, setMinMaxValuesAC } from "./counterReducer"
 let startState: GlobalCounterState
+
 beforeEach(() => {
     startState = {
         minValue: Math.random().toString(),
@@ -26,19 +27,19 @@ test('Correct values should be setted', () => {
         resetButtonDisabled: true
     })
 })
-test('Screen value should be increased by "step" value', () => {
-    // const action = increaseScreenValueAC()
-    // const endState = counterReducer(startState, action)
-    // expect(endState.screenValue).toBe((Number(startState.screenValue) + Number(startState.step)).toString())
-    // expect(endState).toEqual({
-    //     minValue: startState.minValue,
-    //     maxValue: startState.maxValue,
-    //     screenValue: (Number(startState.screenValue) + Number(startState.step)).toString(),
-    //     inputError: false,
-    //     setButtonDisabled: true,
-    //     addButtonDisabled: false,
-    //     resetButtonDisabled: true
-    // })
+test('Screen value should be increased by STEP', () => {
+    const action = increaseScreenValueAC()
+    const endState = counterReducer(startState, action)
+    expect(endState.screenValue).toBe((Number(startState.screenValue) + STEP).toString())
+    expect(endState).toEqual({
+        minValue: startState.minValue,
+        maxValue: startState.maxValue,
+        screenValue: (Number(startState.screenValue) + STEP).toString(),
+        inputError: false,
+        setButtonDisabled: true,
+        addButtonDisabled: false,
+        resetButtonDisabled: true
+    })
 })
 
 test('Screen value should be set to minValue', () => {

@@ -9,7 +9,7 @@ const SET_IS_SET_BUTTON_DISABLED = 'SET-IS-SET-BUTTON-DISABLED'
 const SET_IS_ADD_BUTTON_DISABLED = 'SET-IS-ADD-BUTTON-DISABLED'
 const SET_IS_RESET_BUTTON_DISABLED = 'SET-IS-RESET-BUTTON-DISABLED'
 
-const step = 1
+export const STEP = 1
 
 const initialState: GlobalCounterState = {
     minValue: '0',
@@ -37,7 +37,7 @@ export const counterReducer = (state: GlobalCounterState = initialState, action:
         case INCREASE_SCREEN_VALUE:
             return {
                 ...state,
-                screenValue: (Number(state.screenValue) + Number(step)).toString()
+                screenValue: (Number(state.screenValue) + Number(STEP)).toString()
             }
         case RESET_SCREEN_VALUE:
             return {

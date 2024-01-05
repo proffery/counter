@@ -64,10 +64,10 @@ export const Settings = memo((props: SettingsPropsType) => {
         localInputsErrorsControlLogic()
     }, [inputsLocalState.maxValue, inputsLocalState.minValue])
 
-    const onSetClickHandler = useCallback(() => {
+    const onSetClickHandler = () => {
         props.setIsSetButtonDisabled(true)
         props.setValues(inputsLocalState)
-    }, [props.setValues, props.setButtonDisabled])
+    }
 
     const maxValueOnChangeHandler = useCallback((value: string) => {
         setInputsLocalState({ ...inputsLocalState, maxValue: value })
@@ -77,7 +77,7 @@ export const Settings = memo((props: SettingsPropsType) => {
     const minValueOnChangeHandler = useCallback((value: string) => {
         setInputsLocalState({ ...inputsLocalState, minValue: value })
         props.setIsSetButtonDisabled(false)
-    }, [inputsLocalState.minValue, props.setIsSetButtonDisabled])
+    }, [inputsLocalState.minValue, props.setIsSetButtonDisabled, props.setButtonDisabled])
 
 
     return (
