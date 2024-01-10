@@ -1,16 +1,18 @@
 import styled from "styled-components"
 import { Button } from "./Button"
 import { Input } from "./Input"
-import { memo, useCallback, useEffect, useState } from "react"
+import { ChangeEvent, memo } from "react"
 import { Wrapper } from "./Wrapper"
 
 type SettingsPropsType = {
     maxValue: string
     minValue: string
+    isMaxValueError: boolean
+    isMinValueError: boolean
     setButtonDisabled: boolean
-    setValues: (valuesObject: MinMaxValuesObjectType) => void
-    setInputError: (isError: boolean) => void
-    setIsSetButtonDisabled: (isDisabled: boolean) => void
+    onSetClickHandler: () => void
+    maxValueLocalOnChange: (value: string) => void
+    minValueLocalOnChange: (value: string) => void
 }
 export type MinMaxValuesObjectType = {
     maxValue: string
@@ -19,66 +21,14 @@ export type MinMaxValuesObjectType = {
 
 export const Settings = memo((props: SettingsPropsType) => {
     console.log("SETTINGS RENDERED");
-    const [inputsLocalState, setInputsLocalState] = useState<MinMaxValuesObjectType>({
-        maxValue: props.maxValue,
-        minValue: props.minValue
-    })
-    const [inputLocalError, setInputLocalError] = useState({
-        isMaxValueError: false,
-        isMinValueError: false
-    })
 
-    const localInputsErrorsControlLogic = () => {
-        if (Number(inputsLocalState.minValue) < 0 && Number(inputsLocalState.maxValue) < 0) {
-            setInputLocalError({ ...inputLocalError, isMaxValueError: true, isMinValueError: true })
-            props.setIsSetButtonDisabled(true)
-            props.setInputError(true)
-        }
-        else if (Number(inputsLocalState.minValue) < 0) {
-            setInputLocalError({ ...inputLocalError, isMaxValueError: false, isMinValueError: true })
-            props.setIsSetButtonDisabled(true)
-            props.setInputError(true)
-        }
-        else if (Number(inputsLocalState.maxValue) < 0) {
-            setInputLocalError({ ...inputLocalError, isMaxValueError: true, isMinValueError: false })
-            props.setIsSetButtonDisabled(true)
-            props.setInputError(true)
-        }
-        else if (Number(inputsLocalState.minValue) >= Number(inputsLocalState.maxValue)) {
-            setInputLocalError({ ...inputLocalError, isMaxValueError: true, isMinValueError: true })
-            props.setIsSetButtonDisabled(true)
-            props.setInputError(true)
-        }
-        else {
-            setInputLocalError({ ...inputLocalError, isMaxValueError: false, isMinValueError: false })
-            props.setIsSetButtonDisabled(false)
-            props.setInputError(false)
-        }
-    }
-    // useEffect(() => {
-    //     //set props values from LocalStorage
-    //     setInputsLocalState({ ...inputsLocalState, maxValue: props.globalCounterState.maxValue, minValue: props.globalCounterState.minValue })
-    // }, [props.globalCounterState.maxValue, props.globalCounterState.minValue])
-
-    useEffect(() => {
-        localInputsErrorsControlLogic()
-    }, [inputsLocalState.maxValue, inputsLocalState.minValue])
-
-    const onSetClickHandler = () => {
-        props.setIsSetButtonDisabled(true)
-        props.setValues(inputsLocalState)
+    const maxValueOnChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
+        props.maxValueLocalOnChange(e.currentTarget.value)
     }
 
-    const maxValueOnChangeHandler = useCallback((value: string) => {
-        setInputsLocalState({ ...inputsLocalState, maxValue: value })
-        props.setIsSetButtonDisabled(false)
-    }, [inputsLocalState.maxValue, props.setIsSetButtonDisabled])
-
-    const minValueOnChangeHandler = useCallback((value: string) => {
-        setInputsLocalState({ ...inputsLocalState, minValue: value })
-        props.setIsSetButtonDisabled(false)
-    }, [inputsLocalState.minValue, props.setIsSetButtonDisabled, props.setButtonDisabled])
-
+    const minValueOnChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
+        props.minValueLocalOnChange(e.currentTarget.value)
+    }
 
     return (
         <Wrapper
@@ -91,19 +41,19 @@ export const Settings = memo((props: SettingsPropsType) => {
         >
             <Form>
                 <Input
-                    value={inputsLocalState.maxValue}
+                    value={props.maxValue}
                     label="Max value"
                     onChange={maxValueOnChangeHandler}
-                    isInputError={inputLocalError.isMaxValueError}
+                    isInputError={props.isMaxValueError}
                 />
                 <Input
-                    value={inputsLocalState.minValue}
+                    value={props.minValue}
                     label="Min value"
                     onChange={minValueOnChangeHandler}
-                    isInputError={inputLocalError.isMinValueError}
+                    isInputError={props.isMinValueError}
                 />
                 <Button name="Set"
-                    onClick={onSetClickHandler}
+                    onClick={props.onSetClickHandler}
                     isDisabled={props.setButtonDisabled} />
             </Form>
         </Wrapper>

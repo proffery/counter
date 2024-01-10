@@ -1,67 +1,27 @@
 import { Wrapper } from "./Wrapper"
 import { Button } from "./Button"
 import { Screen } from "./Screen"
-import { memo, useCallback, useEffect, useState } from "react"
+import { memo } from "react"
 
 type DisplayPropsType = {
-    maxValue: string
-    screenValue: string
+    displayValue: string
     inputError: boolean
-    setButtonDisabled: boolean
     addButtonDisabled: boolean
     resetButtonDisabled: boolean
     increaseScreenValue: () => void
     resetScreenValue: () => void
-    setIsAddButtonDisabled: (isDisabled: boolean) => void
 }
 
 export const Display = memo((props: DisplayPropsType) => {
     console.log("DISPLAY RENDERED");
-    const ERROR_MSG = "Incorect input value"
-    const HELP_MSG = "Set values and press \"set\" button"
-    const [displayValue, setDisplayValue] = useState(HELP_MSG)
 
-    const displayControlLogic = () => {
-        if (props.inputError) {
-            if (Number(props.screenValue) >= Number(props.maxValue)) {
-                setDisplayValue(props.screenValue)
-                props.setIsAddButtonDisabled(true)
-            }
-            else {
-                setDisplayValue(ERROR_MSG)
-                props.setIsAddButtonDisabled(true)
-            }
-        }
-        else {
-            if (props.setButtonDisabled) {
-                setDisplayValue(props.screenValue)
-                props.setIsAddButtonDisabled(false)
-            }
-            else {
-                setDisplayValue(HELP_MSG)
-                props.setIsAddButtonDisabled(true)
-            }
-        }
+    const incHandler = () => {
+        props.increaseScreenValue()
     }
 
-    useEffect(() => {
-        displayControlLogic()
-    }, [
-        props.resetButtonDisabled,
-        props.addButtonDisabled,
-        props.screenValue,
-        props.inputError,
-        props.setButtonDisabled
-    ])
-
-    const incHandler = useCallback(() => {
-        props.increaseScreenValue()
-    }, [props.increaseScreenValue])
-
-    const resetHandler = useCallback(() => {
+    const resetHandler = () => {
         props.resetScreenValue()
-    }, [props.resetScreenValue])
-
+    }
     // const isAddButtonDisabled = props.maxValue === props.screenValue
 
     return (
@@ -74,7 +34,7 @@ export const Display = memo((props: DisplayPropsType) => {
             width="250px"
             gap={"20px"}
         >
-            <Screen displayValue={displayValue}
+            <Screen displayValue={props.displayValue}
                 isInputError={props.inputError}
             />
             <Wrapper direction='row' variant='common' gap="20px">

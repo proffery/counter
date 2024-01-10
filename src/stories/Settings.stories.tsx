@@ -14,22 +14,24 @@ const meta: Meta<typeof Settings> = {
   tags: ['autodocs'],
   //ore on argTypes: https://storybook.js.org/docs/api/argtypes
   argTypes: {
-    setValues: {
-      action: 'Current values is send',
+    onSetClickHandler: {
+      action: 'Current values will be setted',
       description: 'Set values'
     },
-    setInputError: {
-      action: 'Global error condition will be seted',
-      description: 'Set error'
+    maxValueLocalOnChange: {
+      action: 'Max value will be changed',
+      description: 'Max value on change'
     },
-    setIsSetButtonDisabled: {
-      action: '"Set" button will be disabled',
-      description: 'Disable "Set" button'
+    minValueLocalOnChange: {
+      action: 'Min value will be changed',
+      description: 'Min value on change'
     }
   },
   args: {
     maxValue: '5',
     minValue: '0',
+    isMaxValueError: false,
+    isMinValueError: false,
     setButtonDisabled: false
   }
 }
@@ -41,6 +43,8 @@ export const Normal: Story = {
   args: {
     maxValue: '5',
     minValue: '0',
+    isMaxValueError: false,
+    isMinValueError: false,
     setButtonDisabled: false
   }
 }
@@ -49,6 +53,8 @@ export const Error: Story = {
   args: {
     maxValue: '0',
     minValue: '0',
+    isMaxValueError: true,
+    isMinValueError: true,
     setButtonDisabled: true
   }
 };

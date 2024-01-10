@@ -1,19 +1,13 @@
-import { ChangeEvent, memo } from "react"
+import { InputHTMLAttributes, memo } from "react"
 import styled, { css } from "styled-components"
 
-type InputPropsType = {
+interface InputPropsType extends InputHTMLAttributes<HTMLInputElement>  {
     label?: string
-    type?: 'number' | 'text' | 'password'
     isInputError: boolean
-    value: string
-    onChange: (value: string) => void
 }
 
 export const Input = memo((props: InputPropsType) => {
     console.log("INPUT RENDERED");
-    const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-        props.onChange(e.currentTarget.value)
-    }
 
     return (
         <div>
@@ -21,9 +15,6 @@ export const Input = memo((props: InputPropsType) => {
                 <StyledLabel htmlFor={props.label}>{props.label}</StyledLabel>}
             <StyledInput
                 type={props.type || "number"}
-                id={props.label}
-                value={props.value}
-                onChange={onChangeHandler}
                 error={props.isInputError}
             />
         </div>
