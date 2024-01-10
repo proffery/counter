@@ -93,10 +93,6 @@ export const AppWithReduxCounter = memo(() => {
     //     localStorage.setItem('localCounterState', JSON.stringify(values))
     // }
 
-    // const saveToLocalStorage = (values: MinMaxValuesObjectType) => {
-    //     localStorage.setItem('localCounterState', JSON.stringify(values))
-    // }
-
     // const getFromLocalStorage = () => {
     //     let localStorageValues = localStorage.getItem('localCounterState')
     //     if (localStorageValues !== null && localStorageValues !== undefined) {
