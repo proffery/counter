@@ -17,13 +17,14 @@ export const HELP_MSG = "Set values and press \"set\" button"
 
 export const AppWithReduxCounter = memo(() => {
     console.log("APP RENDERED");
-
+    
     type LocalCounterState = {
         maxValue: string
         minValue: string
         isMaxValueError: boolean
         isMinValueError: boolean
         inputError: boolean
+        isValuesSeted: boolean
         setButtonDisabled: boolean
         addButtonDisabled: boolean
         resetButtonDisabled: boolean
@@ -33,166 +34,181 @@ export const AppWithReduxCounter = memo(() => {
     const dispatch = useDispatch()
     const [localCounterState, setLocalCounterState] = useState<LocalCounterState>(
         {
-            maxValue: '5',
-            minValue: '0',
+            maxValue: counterState.maxValue,
+            minValue: counterState.minValue,
             isMaxValueError: false,
             isMinValueError: false,
             inputError: false,
+            isValuesSeted: false,
             setButtonDisabled: false,
-            addButtonDisabled: false,
+            addButtonDisabled: true,
             resetButtonDisabled: true,
             currentDisplayValue: HELP_MSG
         }
-    )
+        )
+        
+        useEffect(() => {
+            localInputsErrorsControlLogic()
+        }, [
+            localCounterState.maxValue,
+            localCounterState.minValue
+        ])
+        
+        useEffect(() => {
+            increaseValueControlLogic();
+        }, [
+            counterState.screenValue,
+            localCounterState.isValuesSeted
+        ])
+        
+        useEffect(() => {
+            displayControlLogic()
+        }, [
+            counterState.screenValue,
+            localCounterState.inputError,
+            localCounterState.setButtonDisabled
+        ])
 
-    const increaseValueControlLogic = useCallback(() => {
-        if (Number(counterState.screenValue) >= Number(counterState.maxValue)) {
-            setLocalCounterState({
-                ...localCounterState,
-                addButtonDisabled: true, inputError: true
-            })
+        const increaseValueControlLogic = () => {
+            if (localCounterState.isValuesSeted) {
+                if (counterState.screenValue >= counterState.maxValue) {
+                    setLocalCounterState(prev => ({
+                        ...prev,
+                        addButtonDisabled: true, inputError: true
+                    }))
+            }
+            else {
+                setLocalCounterState(prev => ({
+                    ...prev,
+                    addButtonDisabled: false, inputError: false
+                }))
+            }
         }
         else {
-            setLocalCounterState({
-                ...localCounterState,
-                addButtonDisabled: false, inputError: false
-            })
+            setLocalCounterState(prev => ({
+                ...prev,
+                addButtonDisabled: true
+            }))
         }
-    }, [counterState.maxValue, counterState.screenValue])
-
-    const resetButtonControlLogic = useCallback(() => {
-        if (Number(counterState.screenValue) === Number(counterState.minValue)) {
-            setLocalCounterState({
-                ...localCounterState,
+    }
+    
+    const resetButtonControlLogic = () => {
+        if (localCounterState.isValuesSeted) {
+            if (counterState.screenValue === counterState.minValue) {
+                setLocalCounterState(prev => ({
+                    ...prev,
+                    resetButtonDisabled: true
+                }))
+            }
+            else {
+                setLocalCounterState(prev => ({
+                    ...prev,
+                    resetButtonDisabled: false
+                }))
+            }
+        }
+        else {
+            setLocalCounterState(prev => ({
+                ...prev,
                 resetButtonDisabled: true
-            })
+            }))
         }
-        else {
-            setLocalCounterState({
-                ...localCounterState,
-                resetButtonDisabled: false
-            })
-        }
-    }, [counterState.minValue, counterState.screenValue])
+    }
 
     const localInputsErrorsControlLogic = () => {
-        if (Number(localCounterState.minValue) < 0 && Number(localCounterState.maxValue) < 0) {
-            setLocalCounterState({
-                ...localCounterState,
+        if (localCounterState.minValue < '0' && localCounterState.maxValue < '0') {
+            setLocalCounterState(prev => ({
+                ...prev,
                 isMaxValueError: true, isMinValueError: true, setButtonDisabled: true, inputError: true
-            })
+            }))
         }
-        else if (Number(localCounterState.minValue) < 0) {
-            setLocalCounterState({
-                ...localCounterState,
+        else if (localCounterState.minValue < '0') {
+            setLocalCounterState(prev => ({
+                ...prev,
                 isMaxValueError: false, isMinValueError: true, setButtonDisabled: true, inputError: true
-            })
+            }))
         }
-        else if (Number(localCounterState.maxValue) < 0) {
-            setLocalCounterState({
-                ...localCounterState,
+        else if (localCounterState.maxValue < '0') {
+            setLocalCounterState(prev => ({
+                ...prev,
                 isMaxValueError: true, isMinValueError: false, setButtonDisabled: true, inputError: true
-            })
+            }))
         }
-        else if (Number(localCounterState.minValue) >= Number(localCounterState.maxValue)) {
-            setLocalCounterState({
-                ...localCounterState,
+        else if (localCounterState.minValue >= localCounterState.maxValue) {
+            setLocalCounterState(prev => ({
+                ...prev,
                 isMaxValueError: true, isMinValueError: true, setButtonDisabled: true, inputError: true
-            })
+            }))
         }
         else {
-            setLocalCounterState({
-                ...localCounterState,
-                isMaxValueError: true, isMinValueError: false, setButtonDisabled: false, inputError: false
-            })
+            setLocalCounterState(prev => ({
+                ...prev,
+                isMaxValueError: false, isMinValueError: false, inputError: false
+            }))
         }
     }
 
     const displayControlLogic = () => {
         if (localCounterState.inputError) {
-            if (Number(counterState.screenValue) >= Number(counterState.maxValue)) {
-                setLocalCounterState({
-                    ...localCounterState,
-                    currentDisplayValue: counterState.screenValue, addButtonDisabled: true
-                })
+            if (localCounterState.isValuesSeted) {
+                setLocalCounterState(prev => ({
+                    ...prev,
+                    currentDisplayValue: counterState.screenValue
+                }))
             }
             else {
-                setLocalCounterState({
-                    ...localCounterState,
-                    currentDisplayValue: ERROR_MSG, addButtonDisabled: true
-                })
+                setLocalCounterState(prev => ({
+                    ...prev,
+                    currentDisplayValue: ERROR_MSG
+                }))
             }
         }
         else {
-            if (localCounterState.setButtonDisabled) {
-                setLocalCounterState({
-                    ...localCounterState,
-                    currentDisplayValue: counterState.screenValue, addButtonDisabled: false
-                })
+            if (localCounterState.isValuesSeted) {
+                setLocalCounterState(prev => ({
+                    ...prev,
+                    currentDisplayValue: counterState.screenValue
+                }))
             }
             else {
-                setLocalCounterState({
-                    ...localCounterState,
-                    currentDisplayValue: HELP_MSG, addButtonDisabled: true
-                })
+                setLocalCounterState(prev => ({
+                    ...prev,
+                    currentDisplayValue: HELP_MSG
+                }))
             }
         }
+        resetButtonControlLogic()
     }
 
-    useEffect(() => {
-        setLocalCounterState({
-            ...localCounterState,
-            maxValue: counterState.maxValue, minValue: counterState.minValue
-        })
-    }, [counterState.maxValue, counterState.minValue])
 
-    useEffect(() => {
-        displayControlLogic()
-    }, [
-        localCounterState.resetButtonDisabled,
-        localCounterState.addButtonDisabled,
-        counterState.screenValue,
-        localCounterState.inputError,
-        localCounterState.setButtonDisabled
-    ])
-
-    useEffect(() => {
-        localInputsErrorsControlLogic()
-    }, [localCounterState.maxValue, localCounterState.minValue])
-
-    useEffect(() => {
-        increaseValueControlLogic();
-    }, [counterState.screenValue])
-
-    useEffect(() => {
-        resetButtonControlLogic();
-    }, [counterState.screenValue, counterState.minValue])
 
 
     const maxValueLocalOnChange = (value: string) => {
-        setLocalCounterState({ ...localCounterState, maxValue: value, setButtonDisabled: false })
+        setLocalCounterState(prev => ({ ...prev, maxValue: value, setButtonDisabled: false, isValuesSeted: false }))
     }
+
     const minValueLocalOnChange = (value: string) => {
-        setLocalCounterState({ ...localCounterState, minValue: value, setButtonDisabled: false })
+        setLocalCounterState(prev => ({ ...prev, minValue: value, setButtonDisabled: false, isValuesSeted: false }))
     }
 
-    const onSetClickHandler = () => {
-        setLocalCounterState({ ...localCounterState, setButtonDisabled: true })
+    const onSetClickHandler = useCallback(() => {
         setMinMaxValues(localCounterState.minValue, localCounterState.maxValue)
-    }
+        setLocalCounterState({ ...localCounterState, setButtonDisabled: true, isValuesSeted: true })
+    }, [localCounterState.minValue, localCounterState.maxValue, localCounterState.inputError])
 
-    const setMinMaxValues = useCallback((minValue: string, maxValue: string) => {
+    const setMinMaxValues = (minValue: string, maxValue: string) => {
         dispatch(setMinMaxValuesAC(minValue, maxValue))
         //saveToLocalStorage(valuesObject)
-    }, [])
+    }
 
-    const increaseScreenValue = useCallback(() => {
+    const increaseScreenValue = () => {
         dispatch(increaseScreenValueAC())
-    }, [])
+    }
 
-    const resetScreenValue = useCallback(() => {
+    const resetScreenValue = () => {
         dispatch(ResetScreenValueAC())
-    }, [])
+        displayControlLogic()
+    }
 
     // const saveToLocalStorage = (values: MinMaxValuesObjectType) => {
     //     localStorage.setItem('localCounterState', JSON.stringify(values))

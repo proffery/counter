@@ -33,7 +33,7 @@ export const counterReducer = (state: GlobalCounterState = initialState, action:
         case INCREASE_SCREEN_VALUE:
             return {
                 ...state,
-                screenValue: (Number(state.screenValue) + Number(STEP)).toString()
+                screenValue: (Number(state.screenValue) + STEP).toString()
             }
         case RESET_SCREEN_VALUE:
             return {
@@ -89,43 +89,3 @@ export const ResetScreenValueAC = () => {
         type: RESET_SCREEN_VALUE
     } as const
 }
-
-// type SetGlobalErrorACType = ReturnType<typeof setInputGlobalErrorAC>
-// export const setInputGlobalErrorAC = (isError: boolean) => {
-//     return {
-//         type: SET_GLOBAL_ERROR,
-//         payload: {
-//             isError
-//         }
-//     } as const
-// }
-
-// type SetIsSetButtonDisabledACType = ReturnType<typeof setIsSetButtonDisabledAC>
-// export const setIsSetButtonDisabledAC = (isDisabled: boolean) => {
-//     return {
-//         type: SET_IS_SET_BUTTON_DISABLED,
-//         payload: {
-//             isDisabled
-//         }
-//     } as const
-// }
-
-// type SetIsAddButtonDisabledACType = ReturnType<typeof setIsAddButtonDisabledAC>
-// export const setIsAddButtonDisabledAC = (isDisabled: boolean) => {
-//     return {
-//         type: SET_IS_ADD_BUTTON_DISABLED,
-//         payload: {
-//             isDisabled
-//         }
-//     } as const
-// }
-
-// type SetIsResetButtonDisabledACType = ReturnType<typeof setIsResetButtonDisabledAC>
-// export const setIsResetButtonDisabledAC = (isDisabled: boolean) => {
-//     return {
-//         type: SET_IS_RESET_BUTTON_DISABLED,
-//         payload: {
-//             isDisabled
-//         }
-//     } as const
-// } 

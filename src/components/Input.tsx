@@ -8,7 +8,6 @@ interface InputPropsType extends InputHTMLAttributes<HTMLInputElement>  {
 
 export const Input = memo((props: InputPropsType) => {
     console.log("INPUT RENDERED");
-
     return (
         <div>
             {props.label &&
@@ -16,6 +15,8 @@ export const Input = memo((props: InputPropsType) => {
             <StyledInput
                 type={props.type || "number"}
                 error={props.isInputError}
+                value={props.value}
+                onChange={props.onChange}
             />
         </div>
 

@@ -1,7 +1,7 @@
 import { Wrapper } from "./Wrapper"
 import { Button } from "./Button"
 import { Screen } from "./Screen"
-import { memo } from "react"
+import { memo, useCallback } from "react"
 
 type DisplayPropsType = {
     displayValue: string
@@ -14,14 +14,13 @@ type DisplayPropsType = {
 
 export const Display = memo((props: DisplayPropsType) => {
     console.log("DISPLAY RENDERED");
-
-    const incHandler = () => {
+    const incHandler = useCallback(() => {
         props.increaseScreenValue()
-    }
+    }, [props.addButtonDisabled])
 
-    const resetHandler = () => {
+    const resetHandler = useCallback(() => {
         props.resetScreenValue()
-    }
+    }, [props.resetButtonDisabled])
     // const isAddButtonDisabled = props.maxValue === props.screenValue
 
     return (

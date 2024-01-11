@@ -1,7 +1,7 @@
 import styled from "styled-components"
 import { Button } from "./Button"
 import { Input } from "./Input"
-import { ChangeEvent, memo } from "react"
+import { ChangeEvent, memo, useCallback } from "react"
 import { Wrapper } from "./Wrapper"
 
 type SettingsPropsType = {
@@ -14,21 +14,17 @@ type SettingsPropsType = {
     maxValueLocalOnChange: (value: string) => void
     minValueLocalOnChange: (value: string) => void
 }
-export type MinMaxValuesObjectType = {
-    maxValue: string
-    minValue: string
-}
 
 export const Settings = memo((props: SettingsPropsType) => {
     console.log("SETTINGS RENDERED");
 
-    const maxValueOnChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
+    const maxValueOnChangeHandler = useCallback((e: ChangeEvent<HTMLInputElement>) => {
         props.maxValueLocalOnChange(e.currentTarget.value)
-    }
+    }, [props.maxValue, props.isMaxValueError])
 
-    const minValueOnChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
+    const minValueOnChangeHandler = useCallback((e: ChangeEvent<HTMLInputElement>) => {
         props.minValueLocalOnChange(e.currentTarget.value)
-    }
+    }, [props.minValue, props.isMinValueError])
 
     return (
         <Wrapper
