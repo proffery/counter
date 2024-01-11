@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { Display } from '../components/Display';
-import { ERROR_MSG } from '../AppWithReduxCounter';
+import { ERROR_MSG, HELP_MSG } from '../AppWithReduxCounter';
 
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
@@ -38,7 +38,7 @@ type Story = StoryObj<typeof Display>;
 // More on writing stories with args: https://storybook.js.org/docs/writing-stories/args
 export const ValuesIsNotSettedNoErrors: Story = {
   args: {
-    displayValue: '0',
+    displayValue: HELP_MSG,
     inputError: false,
     addButtonDisabled: true,
     resetButtonDisabled: true
